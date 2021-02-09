@@ -73,7 +73,6 @@ namespace wHealthApi.Controllers
                     httpResponse.Result= U;
                     return Ok(httpResponse);
                 }
-              
 
             }
 
