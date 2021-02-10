@@ -141,7 +141,17 @@ namespace wHealthApi.Controllers
             Response response = new Response();
             if (user!=null)
             {
-                user.Password = newpass;
+                try
+                {
+                    user.Password = newpass;
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch(Exception ex)
+                {
+                    throw;
+                }
+               
                 response.Status = true;
                 response.Result = "Your password Updated Successfully";
                 return Ok(response);
