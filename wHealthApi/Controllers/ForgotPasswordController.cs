@@ -134,6 +134,22 @@ namespace wHealthApi.Controllers
 
         }
 
+        [HttpPut]
+        public async Task<IActionResult> SaveUpdatedPassword(int id,string newpass)
+        {
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            Response response = new Response();
+            if (user!=null)
+            {
+                user.Password = newpass;
+                response.Status = true;
+                response.Result = "Your password Updated Successfully";
+                return Ok(response);
+                
+            }
+            response.Status = false;
+            return Ok(response);
 
+        }
     }
 }
