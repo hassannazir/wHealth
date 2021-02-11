@@ -14,11 +14,11 @@ namespace wHealthApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ForgotPasswordController :BaseController
+    public class PasswordHandlerController :BaseController
     {
 
         private readonly wHealthappDbContext _context;
-        public ForgotPasswordController(wHealthappDbContext context)
+        public PasswordHandlerController(wHealthappDbContext context)
         {
             _context = context;
         }
@@ -38,12 +38,12 @@ namespace wHealthApi.Controllers
                     MailMessage em = new MailMessage();
                     em.To.Add(uPatient.Email);
                     em.From = new MailAddress("dev@theta.solutions", "wHealth");
-                    em.Subject = "6 DIGIT CODE FOR FORGOT PASSWORD.";
+                    em.Subject = "--  PASSWORD RECOVERY CODE  --";
 
                     Random generator = new Random();
                     int r = generator.Next(100000, 1000000);
 
-                    em.Body = "<h4>Dear " + uPatient.Name + ", </h4><br>Please enter this six digit code in order to change password.<br><br>" + r + " <br><br>  Thanks.";
+                    em.Body = "<h4>Dear " + uPatient.Name + ", </h4><br>Please enter this six digit code in the app in order to change password.<br><br>" + r + " <br><br>  Thanks.";
 
                     em.IsBodyHtml = true;
 
@@ -69,12 +69,13 @@ namespace wHealthApi.Controllers
                     MailMessage em = new MailMessage();
                     em.To.Add(uDoctor.Email);
                     em.From = new MailAddress("dev@theta.solutions", "wHealth");
-                    em.Subject = "6 DIGIT CODE FOR FORGOT PASSWORD.";
+                    em.Subject = "--  PASSWORD RECOVERY CODE  --";
+
 
                     Random generator = new Random();
                     int r = generator.Next(100000, 1000000);
 
-                    em.Body = "<h4>Dear " + uDoctor.Name + ", </h4><br>Please enter this six digit code in order to change password.<br><br>" + r + " <br><br>  Thanks.";
+                    em.Body = "<h4>Dear " + uDoctor.Name + ", </h4><br>Please enter this six digit code in the app in order to change password.<br><br>" + r + " <br><br>  Thanks.";
 
                     em.IsBodyHtml = true;
 
@@ -99,12 +100,12 @@ namespace wHealthApi.Controllers
                     MailMessage em = new MailMessage();
                     em.To.Add(uClinic.Email);
                     em.From = new MailAddress("dev@theta.solutions", "wHealth");
-                    em.Subject = "6 DIGIT CODE FOR FORGOT PASSWORD.";
+                    em.Subject = "--  PASSWORD RECOVERY CODE  --";
 
                     Random generator = new Random();
                     int r = generator.Next(100000, 1000000);
 
-                    em.Body = "<h4>Dear " + uClinic.Name + ", </h4><br>Please enter this six digit code in order to change password.<br><br>" + r + " <br><br>  Thanks.";
+                    em.Body = "<h4>Dear " + uClinic.Name + ", </h4><br>Please enter this six digit code in the app in order to change password.<br><br>" + r + " <br><br>  Thanks.";
 
                     em.IsBodyHtml = true;
 
@@ -135,13 +136,24 @@ namespace wHealthApi.Controllers
         }
 
         [HttpPut]
+        [AllowAnonymous]
         public async Task<IActionResult> SaveUpdatedPassword(int id,string newpass)
         {
             var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
             Response response = new Response();
             if (user!=null)
             {
-                user.Password = newpass;
+                try
+                {
+                    user.Password = newpass;
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch(Exception ex)
+                {
+                    throw;
+                }
+               
                 response.Status = true;
                 response.Result = "Your password Updated Successfully";
                 return Ok(response);
