@@ -10,5 +10,6 @@ namespace wHealthApi.Models
         public bool Status { get; set; }
         public dynamic Result { get; set; }
         public string Token { get; set; }
+        public string Message { get; set; }
     }
 }
