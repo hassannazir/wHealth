@@ -37,13 +37,13 @@ namespace wHealthApi.Controllers
 
 
 
-        [HttpGet("id")]
+        [HttpGet("userName")]
         [AllowAnonymous]
-        public IActionResult Verify(String id)
+        public IActionResult Verify(String userName)
         {
 
 
-            var us = _context.Users.Where(u => u.Username == id).FirstOrDefault();
+            var us = _context.Users.Where(u => u.Username == userName).FirstOrDefault();
 
 
 

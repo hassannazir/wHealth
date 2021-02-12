@@ -197,7 +197,7 @@ namespace wHealthApi.Controllers
                     em.To.Add(appUser.Email);
                     em.From = new MailAddress("dev@theta.solutions","wHealth");
                     em.Subject = "EMAIL VERIFICATION FOR wHEALTH APP.";
-                    em.Body = "<h4>Dear " + appUser.Name +", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://whealthapp.azurewebsites.net/api/EmailVerification?id=" + user.Id + "'>CLICK HERE! </a><br><br>  Thanks.";
+                    em.Body = "<h4>Dear " + appUser.Name +", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://whealthapp.azurewebsites.net/api/EmailVerification?userName=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
 
                     em.IsBodyHtml = true;
 
