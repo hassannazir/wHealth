@@ -19,6 +19,7 @@ namespace wHealthApi.Controllers
         {
             _context = context;
         }
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -195,7 +196,7 @@ namespace wHealthApi.Controllers
                     MailMessage em = new MailMessage();
                     em.To.Add(appUser.Email);
                     em.From = new MailAddress("dev@theta.solutions","wHealth");
-                    em.Subject = "EMAIL VERFICATION FOR wHEALTH APP.";
+                    em.Subject = "EMAIL VERIFICATION FOR wHEALTH APP.";
                     em.Body = "<h4>Dear " + appUser.Name +", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://whealthapp.azurewebsites.net/api/EmailVerification?id=" + user.Id + "'>CLICK HERE! </a><br><br>  Thanks.";
 
                     em.IsBodyHtml = true;

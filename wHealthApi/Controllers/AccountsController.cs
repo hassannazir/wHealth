@@ -28,6 +28,7 @@ namespace wHealthApi.Controllers
             Config = config;
             _context = context;
         }
+
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login(string username, string pass)
@@ -80,6 +81,7 @@ namespace wHealthApi.Controllers
             httpResponse.Result = "INVALID CREDENTIALS";
             return Ok(httpResponse);
         }
+
         private User AuthenticateUser(User login)
         {
 
