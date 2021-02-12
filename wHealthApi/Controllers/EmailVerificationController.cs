@@ -20,22 +20,6 @@ namespace wHealthApi.Controllers
 
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> VerifyAsync(int id)
-        //{
-        //    var us = await _context.Users.FindAsync(id);
-
-        //    if (us != null)
-        //    {
-        //        us.Status = "Active";
-        //        await _context.SaveChangesAsync();
-        //    }
-
-        //    return Ok();
-        //}
-
-
 
         [HttpGet("userName")]
         [AllowAnonymous]
@@ -54,7 +38,7 @@ namespace wHealthApi.Controllers
                 _context.SaveChanges();
                 return Ok("verification success!!!! and now you can login the app......");
 
-            }
+                }
 
             return Ok("VERFICATION FAILED!!!");
 
@@ -66,3 +50,22 @@ namespace wHealthApi.Controllers
 
     }
 }
+
+
+
+
+
+//[HttpGet]
+//[AllowAnonymous]
+//public async Task<IActionResult> VerifyAsync(int id)
+//{
+//    var us = await _context.Users.FindAsync(id);
+
+//    if (us != null)
+//    {
+//        us.Status = "Active";
+//        await _context.SaveChangesAsync();
+//    }
+
+//    return Ok();
+//}
