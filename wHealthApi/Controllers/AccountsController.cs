@@ -57,21 +57,70 @@ namespace wHealthApi.Controllers
                 httpResponse.Token = tokenStr;
                 if (user.Type== AppConstants.Patient)
                 {
-                    var U = _context.Patients.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    AppUser au = new AppUser(); 
+                    var specificUserTableData = _context.Patients.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+
+                    au.Id = specificUserTableData.Id;
+                    au.Username = usersTableData.Username;
+                    au.Password = specificUserTableData.PhoneNo;
+                    au.Name = specificUserTableData.Name;
+                    au.Email = specificUserTableData.Email;
+                    au.PhoneNo = specificUserTableData.PhoneNo;
+                    au.Address = specificUserTableData.Address;
+
+                    var U = au;
+
                     httpResponse.Result=U;
                     return Ok(httpResponse);
                 }
                 else if(user.Type == AppConstants.Doctor)
                 {
-                    var U = _context.Doctors.Where(u => u.Id == user.DoctorId).FirstOrDefault();
-                    httpResponse.Result= U;
+
+                    AppUser doc = new AppUser();
+                    var specificUserTableData = _context.Doctors.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+
+                    doc.Id = specificUserTableData.Id;
+                    doc.Username = usersTableData.Username;
+                    doc.Password = specificUserTableData.PhoneNo;
+                    doc.Name = specificUserTableData.Name;
+                    doc.Email = specificUserTableData.Email;
+                    doc.PhoneNo = specificUserTableData.PhoneNo;
+                    doc.Address = specificUserTableData.Address;
+                    doc.LicenseNo = specificUserTableData.LicenseNo;
+                    doc.Qualification = specificUserTableData.Qualification;
+                    doc.Experience = specificUserTableData.Experience;
+
+
+                    var U = doc;
+                    httpResponse.Result = U;
                     return Ok(httpResponse);
+                
+                
                 }
                 else if(user.Type == AppConstants.Clinic)
                 {
-                    var U = _context.Clinics.Where(u => u.Id == user.ClinicId).FirstOrDefault();
-                    httpResponse.Result= U;
+                    AppUser cli = new AppUser();
+                    var specificUserTableData = _context.Clinics.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+
+                    cli.Id = specificUserTableData.Id;
+                    cli.Username = usersTableData.Username;
+                    cli.Password = specificUserTableData.PhoneNo;
+                    cli.Name = specificUserTableData.Name;
+                    cli.Email = specificUserTableData.Email;
+                    cli.PhoneNo = specificUserTableData.PhoneNo;
+                    cli.Address = specificUserTableData.Address;
+                    cli.RegistrationNo = specificUserTableData.RegistrationNo;
+
+               
+
+
+                    var U = cli;
+                    httpResponse.Result = U;
                     return Ok(httpResponse);
+
                 }
 
             }
