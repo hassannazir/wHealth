@@ -64,7 +64,7 @@ namespace wHealthApi.Controllers
 
                     au.Id = specificUserTableData.Id;
                     au.Username = usersTableData.Username;
-                    au.Password = specificUserTableData.PhoneNo;
+                    au.Password = usersTableData.Password;
                     au.Name = specificUserTableData.Name;
                     au.Email = specificUserTableData.Email;
                     au.PhoneNo = specificUserTableData.PhoneNo;
@@ -84,7 +84,7 @@ namespace wHealthApi.Controllers
 
                     doc.Id = specificUserTableData.Id;
                     doc.Username = usersTableData.Username;
-                    doc.Password = specificUserTableData.PhoneNo;
+                    doc.Password = usersTableData.Password;
                     doc.Name = specificUserTableData.Name;
                     doc.Email = specificUserTableData.Email;
                     doc.PhoneNo = specificUserTableData.PhoneNo;
@@ -108,7 +108,7 @@ namespace wHealthApi.Controllers
 
                     cli.Id = specificUserTableData.Id;
                     cli.Username = usersTableData.Username;
-                    cli.Password = specificUserTableData.PhoneNo;
+                    cli.Password = usersTableData.Password;
                     cli.Name = specificUserTableData.Name;
                     cli.Email = specificUserTableData.Email;
                     cli.PhoneNo = specificUserTableData.PhoneNo;
