@@ -69,6 +69,8 @@ namespace wHealthApi.Controllers
                     au.Email = specificUserTableData.Email;
                     au.PhoneNo = specificUserTableData.PhoneNo;
                     au.Address = specificUserTableData.Address;
+                    au.Type = user.Type;
+                    au.Status = usersTableData.Status;
 
                     var U = au;
 
@@ -92,6 +94,8 @@ namespace wHealthApi.Controllers
                     doc.LicenseNo = specificUserTableData.LicenseNo;
                     doc.Qualification = specificUserTableData.Qualification;
                     doc.Experience = specificUserTableData.Experience;
+                    doc.Type = user.Type;
+                    doc.Status = usersTableData.Status;
 
 
                     var U = doc;
@@ -114,6 +118,8 @@ namespace wHealthApi.Controllers
                     cli.PhoneNo = specificUserTableData.PhoneNo;
                     cli.Address = specificUserTableData.Address;
                     cli.RegistrationNo = specificUserTableData.RegistrationNo;
+                    cli.Type = user.Type;
+                    cli.Status = usersTableData.Status;
 
                
 
