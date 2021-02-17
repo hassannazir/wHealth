@@ -275,7 +275,7 @@ namespace wHealthApi.Controllers
                     if (clinic == null)
                     {
                         response.Status = false;
-                        response.Result = "Sorry !!! User does not exist";
+                        response.Result = "Sorry !! User does not exist";
                         return Ok(response);
                     }
 
