@@ -267,6 +267,7 @@ namespace wHealthApi.Controllers
                     doc.Name = appUser.Name;
                     doc.PhoneNo = appUser.PhoneNo;
                     doc.Experience = appUser.Experience;
+                    doc.Qualification = appUser.Qualification;
 
                     _context.Doctors.Update(doc);
                     _context.SaveChanges();
