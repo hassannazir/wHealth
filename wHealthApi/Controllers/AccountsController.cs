@@ -28,6 +28,7 @@ namespace wHealthApi.Controllers
             Config = config;
             _context = context;
         }
+
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login(string username, string pass)
@@ -46,7 +47,7 @@ namespace wHealthApi.Controllers
                 if (user.Status != "Active")
                 {
                     httpResponse.Status = false;
-                    httpResponse.Result = "YOU NEED TO VERIFY YOUR EMAIL FIRST.";
+                    httpResponse.Message = "YOU NEED TO VERIFY YOUR EMAIL FIRST.";
                     return Ok(httpResponse);
                 }
                 
@@ -126,9 +127,10 @@ namespace wHealthApi.Controllers
             }
 
             httpResponse.Status = false;
-            httpResponse.Result = "INVALID CREDENTIALS";
+            httpResponse.Message = "INVALID CREDENTIALS";
             return Ok(httpResponse);
         }
+
         private User AuthenticateUser(User login)
         {
 

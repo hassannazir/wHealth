@@ -24,16 +24,16 @@ namespace wHealthApi.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> SendCodeToEmail(int id)
+        public async Task<IActionResult> SendCodeToEmail(string usrname)
         {
-            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Username == usrname).FirstOrDefault();
             Response response = new Response();
 
             if (user != null)
             {
                 if (user.Type == AppConstants.Patient)
                 {
-                    var uPatient = _context.Patients.Where(u => u.Id == id).FirstOrDefault();
+                    var uPatient = _context.Patients.Where(u => u.Id ==user.PatientId).FirstOrDefault();
 
                     MailMessage em = new MailMessage();
                     em.To.Add(uPatient.Email);
@@ -64,7 +64,7 @@ namespace wHealthApi.Controllers
                 }
                 else if (user.Type == AppConstants.Doctor)
                 {
-                    var uDoctor = _context.Doctors.Where(u => u.Id == id).FirstOrDefault();
+                    var uDoctor = _context.Doctors.Where(u => u.Id ==user.DoctorId).FirstOrDefault();
 
                     MailMessage em = new MailMessage();
                     em.To.Add(uDoctor.Email);
@@ -95,7 +95,7 @@ namespace wHealthApi.Controllers
                 }
                 else if (user.Type == AppConstants.Clinic)
                 {
-                    var uClinic = _context.Clinics.Where(u => u.Id == id).FirstOrDefault();
+                    var uClinic = _context.Clinics.Where(u => u.Id == user.ClinicId).FirstOrDefault();
 
                     MailMessage em = new MailMessage();
                     em.To.Add(uClinic.Email);
@@ -127,7 +127,7 @@ namespace wHealthApi.Controllers
             }
 
 
-                response.Result = 0;
+                response.Result ="This username does not exist in the system";
                 return Ok(response);
 
             
@@ -137,9 +137,9 @@ namespace wHealthApi.Controllers
 
         [HttpPut]
         [AllowAnonymous]
-        public async Task<IActionResult> SaveUpdatedPassword(int id,string newpass)
+        public async Task<IActionResult> SaveUpdatedPassword(string usrname,string newpass)
         {
-            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Username == usrname).FirstOrDefault();
             Response response = new Response();
             if (user!=null)
             {
@@ -160,6 +160,7 @@ namespace wHealthApi.Controllers
                 
             }
             response.Status = false;
+            response.Result = "This username does not exist in the system";
             return Ok(response);
 
         }
