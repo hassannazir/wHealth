@@ -64,11 +64,13 @@ namespace wHealthApi.Controllers
 
                     au.Id = specificUserTableData.Id;
                     au.Username = usersTableData.Username;
-                    au.Password = specificUserTableData.PhoneNo;
+                    au.Password = usersTableData.Password;
                     au.Name = specificUserTableData.Name;
                     au.Email = specificUserTableData.Email;
                     au.PhoneNo = specificUserTableData.PhoneNo;
                     au.Address = specificUserTableData.Address;
+                    au.Type = user.Type;
+                    au.Status = usersTableData.Status;
 
                     var U = au;
 
@@ -84,7 +86,7 @@ namespace wHealthApi.Controllers
 
                     doc.Id = specificUserTableData.Id;
                     doc.Username = usersTableData.Username;
-                    doc.Password = specificUserTableData.PhoneNo;
+                    doc.Password = usersTableData.Password;
                     doc.Name = specificUserTableData.Name;
                     doc.Email = specificUserTableData.Email;
                     doc.PhoneNo = specificUserTableData.PhoneNo;
@@ -92,6 +94,8 @@ namespace wHealthApi.Controllers
                     doc.LicenseNo = specificUserTableData.LicenseNo;
                     doc.Qualification = specificUserTableData.Qualification;
                     doc.Experience = specificUserTableData.Experience;
+                    doc.Type = user.Type;
+                    doc.Status = usersTableData.Status;
 
 
                     var U = doc;
@@ -108,12 +112,14 @@ namespace wHealthApi.Controllers
 
                     cli.Id = specificUserTableData.Id;
                     cli.Username = usersTableData.Username;
-                    cli.Password = specificUserTableData.PhoneNo;
+                    cli.Password = usersTableData.Password;
                     cli.Name = specificUserTableData.Name;
                     cli.Email = specificUserTableData.Email;
                     cli.PhoneNo = specificUserTableData.PhoneNo;
                     cli.Address = specificUserTableData.Address;
                     cli.RegistrationNo = specificUserTableData.RegistrationNo;
+                    cli.Type = user.Type;
+                    cli.Status = usersTableData.Status;
 
                
 
