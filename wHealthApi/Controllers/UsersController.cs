@@ -228,10 +228,67 @@ namespace wHealthApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit(AppUser appUser)
+        [AllowAnonymous]
+
+        public async Task<ActionResult> Edit(int id, AppUser appUser)
         {
             try
             {
+                Response response = new Response();
+
+                if (appUser.Type == AppConstants.Patient)
+                {
+                    var pat = await _context.Patients.FindAsync(id);
+                    if (pat == null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !!! User does not exist";
+                        return Ok(response);
+                    }
+
+                    pat.Address = appUser.Address;
+                    pat.Name = appUser.Name;
+                    pat.PhoneNo = appUser.PhoneNo;
+
+                    _context.Patients.Update(pat);
+                    _context.SaveChanges();
+                }
+                else if (appUser.Type == AppConstants.Doctor)
+                {
+                    var doc = await _context.Doctors.FindAsync(id);
+                    if (doc == null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !!! User does not exist";
+                        return Ok(response);
+                    }
+
+                    doc.Address = appUser.Address;
+                    doc.Name = appUser.Name;
+                    doc.PhoneNo = appUser.PhoneNo;
+                    doc.Experience = appUser.Experience;
+                    doc.Qualification = appUser.Qualification;
+
+                    _context.Doctors.Update(doc);
+                    _context.SaveChanges();
+                }
+                else if (appUser.Type == AppConstants.Clinic)
+                {
+                    var clinic = await _context.Clinics.FindAsync(id);
+                    if (clinic == null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !! User does not exist";
+                        return Ok(response);
+                    }
+
+                    clinic.Address = appUser.Address;
+                    clinic.Name = appUser.Name;
+                    clinic.PhoneNo = appUser.PhoneNo;
+
+                    _context.Clinics.Update(clinic);
+                    _context.SaveChanges();
+                }
                 return Ok();
             }
             catch (Exception ex)
