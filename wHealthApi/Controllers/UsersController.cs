@@ -235,6 +235,8 @@ namespace wHealthApi.Controllers
             try
             {
                 Response response = new Response();
+                response.Status = true;
+                response.Result = "Successfully Updated.";
 
                 if (appUser.Type == AppConstants.Patient)
                 {
@@ -289,7 +291,7 @@ namespace wHealthApi.Controllers
                     _context.Clinics.Update(clinic);
                     _context.SaveChanges();
                 }
-                return Ok();
+                return Ok(response);
             }
             catch (Exception ex)
             {
