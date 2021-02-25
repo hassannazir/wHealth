@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -205,7 +206,9 @@ namespace wHealthApi.Controllers
                     em.To.Add(appUser.Email);
                     em.From = new MailAddress("dev@theta.solutions","wHealth");
                     em.Subject = "EMAIL VERFICATION FOR wHEALTH APP.";
-                    em.Body = "<h4>Dear " + appUser.Name +", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://whealthapp.azurewebsites.net/api/EmailVerification?id=" + user.Id + "'>CLICK HERE! </a><br><br>  Thanks.";
+
+                   // em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://localhost:44340/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
+                    em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='http://whealthapi.azurewebsites.net/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
 
                     em.IsBodyHtml = true;
 
@@ -248,19 +251,7 @@ namespace wHealthApi.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+       
 
     }
 }
