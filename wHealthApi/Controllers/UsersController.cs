@@ -151,6 +151,15 @@ namespace wHealthApi.Controllers
                         return Ok(response);
                     }
 
+                    var reg = _context.Clinics.Where(r => r.RegistrationNo == appUser.RegistrationNo).FirstOrDefault();
+                    if (reg != null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !!! This Registeration Number Already Exist";
+                        return Ok(response);
+                    }
+
+
                     clinic.Name = appUser.Name;
                     clinic.Email = appUser.Email;
                     clinic.PhoneNo = appUser.PhoneNo;
