@@ -42,9 +42,19 @@ namespace wHealthApi.Controllers
         {
             try
             {
-                var ClinicData = _context.Clinics.Find(id);
+                var DoctorData = _context.Doctors.Find(id);
+                if (DoctorData != null)
+                return Ok(DoctorData);
 
+                var PatientData = _context.Patients.Find(id);
+                if(PatientData!=null)
+                return Ok(PatientData);
+
+                var ClinicData = _context.Clinics.Find(id);
+                if(ClinicData!=null)
                 return Ok(ClinicData);
+
+                return Ok("id not found");
             }
             catch (Exception ex)
             {
@@ -52,6 +62,8 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
+
+
 
 
     }
