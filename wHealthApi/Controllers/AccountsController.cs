@@ -60,6 +60,7 @@ namespace wHealthApi.Controllers
                     AppUser au = new AppUser(); 
                     var specificUserTableData = _context.Patients.Where(u => u.Id == user.PatientId).FirstOrDefault();
                     var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+                    
 
                     au.Id = specificUserTableData.Id;
                     au.Username = usersTableData.Username;

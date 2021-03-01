@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -151,6 +152,15 @@ namespace wHealthApi.Controllers
                         return Ok(response);
                     }
 
+                    var reg = _context.Clinics.Where(r => r.RegistrationNo == appUser.RegistrationNo).FirstOrDefault();
+                    if (reg != null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !!! This Registeration Number Already Exist";
+                        return Ok(response);
+                    }
+
+
                     clinic.Name = appUser.Name;
                     clinic.Email = appUser.Email;
                     clinic.PhoneNo = appUser.PhoneNo;
@@ -300,19 +310,7 @@ namespace wHealthApi.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+       
 
     }
 }
