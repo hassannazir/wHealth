@@ -202,34 +202,45 @@ namespace wHealthApi.Controllers
 
                 try
                 {
-                    MailMessage em = new MailMessage();
-                    em.To.Add(appUser.Email);
-                    em.From = new MailAddress("dev@theta.solutions","wHealth");
-                    em.Subject = "EMAIL VERFICATION FOR wHEALTH APP.";
+                    if (appUser.Type != AppConstants.Clinic)
+                    {
+                        MailMessage em = new MailMessage();
+                        em.To.Add(appUser.Email);
+                        em.From = new MailAddress("dev@theta.solutions", "wHealth");
+                        em.Subject = "EMAIL VERFICATION FOR wHEALTH APP.";
 
-                   // em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://localhost:44340/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
-                    em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='http://whealthapi.azurewebsites.net/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
+                        // em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://localhost:44340/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
+                        em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='http://whealthapi.azurewebsites.net/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
 
-                    em.IsBodyHtml = true;
+                        em.IsBodyHtml = true;
 
-                    SmtpClient cli = new SmtpClient();
-                    cli.Host = "116.202.175.92";
-                    cli.Port = 25;
-                    cli.UseDefaultCredentials = false;
-                    cli.Credentials = new NetworkCredential("dev@theta.solutions", "8xTc$NU?%5kCh.5L&,u#:o^S|oCp");
-                    cli.EnableSsl = false;
-                    
-                   await cli.SendMailAsync(em);
+                        SmtpClient cli = new SmtpClient();
+                        cli.Host = "116.202.175.92";
+                        cli.Port = 25;
+                        cli.UseDefaultCredentials = false;
+                        cli.Credentials = new NetworkCredential("dev@theta.solutions", "8xTc$NU?%5kCh.5L&,u#:o^S|oCp");
+                        cli.EnableSsl = false;
+
+                        await cli.SendMailAsync(em);
+                    }
                 }
                 catch (Exception ex )
                 {
 
                     throw;
                 }
-
-                response.Status = true;
-                response.Result = "Registeration Completed. Please Verify Your Email First to Use the APP.";
-                return Ok(response);
+                if (appUser.Type != AppConstants.Clinic)
+                {
+                    response.Status = true;
+                    response.Result = "Registeration Completed. Please Verify Your Email First to Use the APP.";
+                    return Ok(response);
+                }
+                else
+                {
+                    response.Status = true;
+                    response.Result = "You will be informed when admin approves your request. Untill then, Please wait.";
+                    return Ok(response);
+                }
             }
             catch
             {
