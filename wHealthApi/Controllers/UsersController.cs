@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -151,6 +152,15 @@ namespace wHealthApi.Controllers
                         return Ok(response);
                     }
 
+                    var reg = _context.Clinics.Where(r => r.RegistrationNo == appUser.RegistrationNo).FirstOrDefault();
+                    if (reg != null)
+                    {
+                        response.Status = false;
+                        response.Result = "Sorry !!! This Registeration Number Already Exist";
+                        return Ok(response);
+                    }
+
+
                     clinic.Name = appUser.Name;
                     clinic.Email = appUser.Email;
                     clinic.PhoneNo = appUser.PhoneNo;
@@ -235,6 +245,8 @@ namespace wHealthApi.Controllers
             try
             {
                 Response response = new Response();
+                response.Status = true;
+                response.Result = "Successfully Updated.";
 
                 if (appUser.Type == AppConstants.Patient)
                 {
@@ -267,6 +279,7 @@ namespace wHealthApi.Controllers
                     doc.Name = appUser.Name;
                     doc.PhoneNo = appUser.PhoneNo;
                     doc.Experience = appUser.Experience;
+                    doc.Qualification = appUser.Qualification;
 
                     _context.Doctors.Update(doc);
                     _context.SaveChanges();
@@ -288,7 +301,7 @@ namespace wHealthApi.Controllers
                     _context.Clinics.Update(clinic);
                     _context.SaveChanges();
                 }
-                return Ok();
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -297,19 +310,7 @@ namespace wHealthApi.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+       
 
     }
 }
