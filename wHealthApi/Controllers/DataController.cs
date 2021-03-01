@@ -68,24 +68,10 @@ namespace wHealthApi.Controllers
         }
 
 
+
+
     }
 }
 
 
 
-
-
-//[HttpGet]
-//[AllowAnonymous]
-//public async Task<IActionResult> VerifyAsync(int id)
-//{
-//    var us = await _context.Users.FindAsync(id);
-
-//    if (us != null)
-//    {
-//        us.Status = "Active";
-//        await _context.SaveChangesAsync();
-//    }
-
-//    return Ok();
-//}
