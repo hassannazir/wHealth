@@ -12,6 +12,6 @@ namespace wHealthApi.Controllers
     [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     public class BaseController : ControllerBase
     {
-        
+         
     }
 }
