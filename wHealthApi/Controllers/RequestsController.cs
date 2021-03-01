@@ -18,8 +18,29 @@ namespace wHealthApi.Controllers
             _context = context;
         }
 
-   
-        
+      [HttpGet]
+      [AllowAnonymous]
+        public IActionResult DoctorSendRequestToClinic(int docId, int clinicId)
+        {
+            Response response = new Response();
+            Doctorclinic docClinicData = new Doctorclinic();
+            docClinicData.ClinicId = clinicId;
+            docClinicData.DoctorId = docId;
+            docClinicData.Status = "InActive";
+            try
+            {
+                _context.Doctorclinics.Add(docClinicData);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+
+            response.Message = "Your request has been SUBMITTED.And you will be informed if clinic APPROVED your request";
+            return Ok(response);
+        }
+
 
     }
 }
