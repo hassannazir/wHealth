@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -241,19 +242,7 @@ namespace wHealthApi.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+       
 
     }
 }
