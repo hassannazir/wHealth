@@ -49,26 +49,46 @@ namespace wHealthApi.Controllers
         }
 
 
-        //RETURNING A SPECIFIC CLINICS DATA
+        //RETURNING A SPECIFIC USER DATA
         [HttpPut]
         [AllowAnonymous]
         public IActionResult Get(int id)
         {
             try
             {
+                Response res = new Response();
+
                 var DoctorData = _context.Doctors.Find(id);
                 if (DoctorData != null)
-                return Ok(DoctorData);
+                {
+                    res.Message = "Selected Doctor's data.";
+                    res.Result = DoctorData;
+                    res.Status = true;
+                    return Ok(res);
+                }
 
                 var PatientData = _context.Patients.Find(id);
-                if(PatientData!=null)
-                return Ok(PatientData);
+                if (PatientData != null)
+                {
+                    res.Message = "Selected Patient's data.";
+                    res.Result = PatientData;
+                    res.Status = true;
+                    return Ok(res);
+                }
 
                 var ClinicData = _context.Clinics.Find(id);
-                if(ClinicData!=null)
-                return Ok(ClinicData);
+                if (ClinicData != null)
+                {
+                    res.Message = "Selected Clinic's data.";
+                    res.Result = ClinicData;
+                    res.Status = true;
+                    return Ok(res);
+                }
 
-                return Ok("id not found");
+                res.Message = "id not found";
+                res.Result = null;
+                res.Status = false;
+                return Ok(res);
             }
             catch (Exception ex)
             {
@@ -86,8 +106,8 @@ namespace wHealthApi.Controllers
 
 
 
-    }
-}
+    
+
 
 
 
