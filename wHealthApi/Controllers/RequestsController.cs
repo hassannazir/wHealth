@@ -20,8 +20,6 @@ namespace wHealthApi.Controllers
             _context = context;
         }
 
-
-
         [HttpPut]
         [AllowAnonymous]
         public async Task<IActionResult> DoctorClinicApprovalAsync(int cid, int did)
@@ -41,7 +39,7 @@ namespace wHealthApi.Controllers
                 em.Subject = "REQUEST TO WORK IN CLINIC";
 
                 // em.Body = "<h4>Dear " + appUser.Name + ", </h4><br>Please click on the following link to confirm your email.<br><br>" + "<a href='https://localhost:44340/Id?Id=" + user.Username + "'>CLICK HERE! </a><br><br>  Thanks.";
-                em.Body = "<h4>Dear " + doc.Name + ", </h4><br>YOUR REQUEST TO WORK FOR THE CLINIC "+clin.Name+" ,  YOU SELECTED HAS BEEN APPROVED. NOW YOU CAN WORK IN THE CLINIC. CONGRATULATIONS!!!!<br><br>";
+                em.Body = "<h4>Dear " + doc.Name + ", </h4><br>YOUR REQUEST TO WORK FOR THE CLINIC " + clin.Name + " ,  YOU SELECTED HAS BEEN APPROVED. NOW YOU CAN WORK IN THE CLINIC. CONGRATULATIONS!!!!<br><br>";
 
                 em.IsBodyHtml = true;
 
@@ -62,8 +60,33 @@ namespace wHealthApi.Controllers
             {
                 throw;
             }
-            
+
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult DoctorSendRequestToClinic(int docId, int clinicId)
+        {
+            Response response = new Response();
+            Doctorclinic docClinicData = new Doctorclinic();
+            docClinicData.ClinicId = clinicId;
+            docClinicData.DoctorId = docId;
+            docClinicData.Status = "InActive";
+            try
+            {
+                _context.Doctorclinics.Add(docClinicData);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            response.Message = "Your request has been SUBMITTED.And you will be informed if clinic APPROVED your request";
+            return Ok(response);
+        }
+
 
     }
 }
