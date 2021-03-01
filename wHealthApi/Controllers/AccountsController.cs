@@ -38,7 +38,6 @@ namespace wHealthApi.Controllers
             login.Username = username;
             login.Password = pass;
             IActionResult result = Unauthorized();
-            AuthenticateUser(login);
             var user = AuthenticateUser(login);
 
             if (user != null)
@@ -81,7 +80,7 @@ namespace wHealthApi.Controllers
                 {
 
                     AppUser doc = new AppUser();
-                    var specificUserTableData = _context.Doctors.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    var specificUserTableData = _context.Doctors.Where(u => u.Id == user.DoctorId).FirstOrDefault();
                     var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
 
                     doc.Id = specificUserTableData.Id;
@@ -107,7 +106,7 @@ namespace wHealthApi.Controllers
                 else if(user.Type == AppConstants.Clinic)
                 {
                     AppUser cli = new AppUser();
-                    var specificUserTableData = _context.Clinics.Where(u => u.Id == user.PatientId).FirstOrDefault();
+                    var specificUserTableData = _context.Clinics.Where(u => u.Id == user.ClinicId).FirstOrDefault();
                     var usersTableData = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
 
                     cli.Id = specificUserTableData.Id;
