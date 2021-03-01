@@ -30,10 +30,10 @@ namespace wHealthApi.Controllers
                 Response res = new Response();
                 IList<Clinic> ClinicList = _context.Clinics.ToList();
                 var query = (from c in _context.Clinics
-                            join u in _context.Users
-                            on c.Id equals u.ClinicId
-                            where u.Status == "Active" 
-                            select new { c.Email, c.Name, c.PhoneNo, c.RegistrationNo, c.Id, c.Address }).ToList();
+                             join u in _context.Users
+                             on c.Id equals u.ClinicId
+                             where u.Status == "Active"
+                             select new { c.Email, c.Name, c.PhoneNo, c.RegistrationNo, c.Id, c.Address }).ToList();
 
                 res.Status = true;
                 res.Result = query;
@@ -97,9 +97,33 @@ namespace wHealthApi.Controllers
             }
         }
 
+        //RETURNING ALL DOCTORS DATA IN CLINIC ID
+        [HttpPatch]
+        [AllowAnonymous]
+        public IActionResult DocsInClinic(int id)
+        {
+            try
+            {
+                Response res = new Response();
+                IList<Clinic> ClinicList = _context.Clinics.ToList();
+                var query = (from c in _context.Doctorclinics
+                             join u in _context.Doctors
+                             on c.DoctorId equals u.Id
+                             where c.ClinicId == id
+                             select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();  
+                    res.Status = true;
+                    res.Result = query;
+                    res.Message = "FOLLOWING DOCTORS INCLUDED";
+                    return Ok(res);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
 
 
-
+        }
     }
 }
 
