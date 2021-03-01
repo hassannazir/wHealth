@@ -43,13 +43,18 @@ namespace wHealthApi.Controllers
             if (user != null)
             {
 
-                if (user.Status != "Active")
+                if (user.Status != "Active" && user.Type!="Clinic")
                 {
                     httpResponse.Status = false;
                     httpResponse.Message = "YOU NEED TO VERIFY YOUR EMAIL FIRST.";
                     return Ok(httpResponse);
                 }
-                
+                else
+                {
+                    httpResponse.Status = false;
+                    httpResponse.Message = "You will be informed when admin approves your request. Untill then, Please wait.";
+                    return Ok(httpResponse);
+                }
                 //ELSE A TOKEN WILL BE GENERATED AND MOVE ON TO SUCCESSFULL LOGIN
                 
                 var tokenStr = GenerateJSONWebToken(user);
