@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - wHealth</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-   
+
     <link rel="stylesheet" href="~/AdminLTE-master/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -15,6 +15,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="~/AdminLTE-master/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
+    <link href="~/AdminLTE-master/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/AdminLTE-master/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/AdminLTE-master/dist/css/adminlte.min.css">
@@ -24,6 +25,9 @@
     <link rel="stylesheet" href="~/AdminLTE-master/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="~/AdminLTE-master/plugins/summernote/summernote-bs4.min.css">
+
+
+
 </head>
 <body class="sidebar-mini layout-fixed" style="height:auto">
     <partial name="_TopNavigation" />
@@ -65,8 +69,11 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/AdminLTE-master/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/AdminLTE-master/plugins/jquery/jquery.js"></script>
     <script src="~/AdminLTE-master/dist/js/pages/dashboard.js"></script>
-    
+    <script src="~/AdminLTE-master/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
