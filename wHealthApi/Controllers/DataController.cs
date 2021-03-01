@@ -19,6 +19,8 @@ namespace wHealthApi.Controllers
         }
 
 
+
+        //RETURNING ALL THE ACTIVE STATUS CLINICS DATA
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Get()
@@ -46,6 +48,8 @@ namespace wHealthApi.Controllers
             }
         }
 
+
+        //RETURNING A SPECIFIC CLINICS DATA
         [HttpPut]
         [AllowAnonymous]
         public IActionResult Get(int id)
