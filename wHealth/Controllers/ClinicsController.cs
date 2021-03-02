@@ -48,60 +48,53 @@ namespace wHealth.Controllers
             return View();
         }
 
-        // POST: Clinics/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,RegistrationNo,Email,Address,PhoneNo")] Clinic clinic)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(clinic);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(clinic);
-        }
-
-        // GET: Clinics/Edit/5
+        
+        // RETURNING CLINICS OBJECT
         public  async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = _context.Users.SingleOrDefault(d => d.ClinicId == id);
+
+            var user = _context.Users.Where(d => d.ClinicId == id).FirstOrDefault();
+            //var clin = _context.Clinics.Where(d => d.Id == id).FirstOrDefault();
+
             
             if (user == null)
             {
                 return NotFound();
             }
+            
+            
             return View(user);
         }
 
-        // POST: Clinics/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+
+        //CHANGE STATUS IN USER OBJECT FOR THE CLINICS
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,User u)
+        public IActionResult EditClinicStatus(int cid, string Status)
         {
-            if (id != u.ClinicId)
-            {
-                return NotFound();
-            }
+           
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
-                    _context.Users.Update(u);
-                    await _context.SaveChangesAsync();
+                //var us = _context.Users.Find(ClinicId);
+
+                var us = _context.Users.Where(i => i.ClinicId == cid).FirstOrDefault();
+                    if (us != null)
+                    {
+                        us.Status = Status;
+                        _context.Update(us);
+                        _context.SaveChanges();
+                        ViewBag.message = "Clinics status has been changed.";
+                        return RedirectToAction("Index");
+
                 }
+
+            }
+
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClinicExists(u.Id))
+                    if (!ClinicExists(cid))
                     {
                         return NotFound();
                     }
@@ -110,10 +103,15 @@ namespace wHealth.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
+
+            ViewBag.message1 = cid;
             return RedirectToAction("Index");
+        
         }
+
+
+
+
 
         // GET: Clinics/Delete/5
         public async Task<IActionResult> Delete(int? id)
