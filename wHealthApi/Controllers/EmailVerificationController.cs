@@ -38,7 +38,7 @@ namespace wHealthApi.Controllers
                 _context.SaveChanges();
                 return Ok("verification success!!!! and now you can login the app......");
 
-                }
+            }
 
             return Ok("VERFICATION FAILED!!!");
 
