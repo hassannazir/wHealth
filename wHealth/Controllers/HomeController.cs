@@ -11,13 +11,12 @@ namespace wHealth.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly whealthappdbContext _context;
+        public HomeController(whealthappdbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
-
+        
         public IActionResult Index()
         {
             return View();
