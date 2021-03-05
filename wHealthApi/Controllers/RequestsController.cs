@@ -89,6 +89,31 @@ namespace wHealthApi.Controllers
         }
 
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ViewDocSchedule(int docId)
+        {
+            try
+            {
+                Response res = new Response();
+                IList<Doctor> DoctorSchedule = _context.Doctors.ToList();
+                var query = (from c in _context.Schedules
+                             join u in _context.Doctors
+                             on c.DoctorId equals u.Id
+                             where c.DoctorId == docId
+                             select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();
+                res.Status = true;
+                res.Result = query;
+                res.Message = "FOLLOWING DOCTORS INCLUDED";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
 
