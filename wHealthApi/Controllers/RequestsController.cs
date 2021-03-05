@@ -96,15 +96,24 @@ namespace wHealthApi.Controllers
             try
             {
                 Response res = new Response();
-                IList<Doctor> DoctorSchedule = _context.Doctors.ToList();
+                
                 var query = (from c in _context.Schedules
                              join u in _context.Doctors
                              on c.DoctorId equals u.Id
                              where c.DoctorId == docId
-                             select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();
+                             select new { c.StartTime, c.EndTime, c.ClinicId }).ToList();
+                if (!query.Any())
+                {
+                    res.Status = false;
+
+                    res.Result = query;
+                    res.Message = "this doctor has not set any Schedule";
+                    return Ok(res);
+                }
                 res.Status = true;
+
                 res.Result = query;
-                res.Message = "FOLLOWING DOCTORS INCLUDED";
+                res.Message = "Here's the doctor's Schedule";
                 return Ok(res);
             }
             catch (Exception ex)
