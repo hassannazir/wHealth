@@ -89,7 +89,7 @@ namespace wHealthApi.Controllers
         }
 
 
-        [HttpGet]
+        [HttpDelete]
         [AllowAnonymous]
         public IActionResult ViewDocSchedule(int docId)
         {
