@@ -89,22 +89,55 @@ namespace wHealthApi.Controllers
         }
 
 
-        [HttpDelete]
+        
+        
+
+        List<Schedule> DocSchedule(int docID)
+        {
+            List<Schedule> ilist = _context.Schedules.ToList<Schedule>();
+
+            var query = (from c in _context.Schedules
+                         join u in _context.Doctors
+                         on c.DoctorId equals u.Id
+                         where c.DoctorId == docID
+                         select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();
+            return ilist;
+        }
+
+        [HttpPost]
         [AllowAnonymous]
-        public IActionResult ViewDocSchedule(int docId)
+        public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, DateTime startTime,DateTime endTime)
         {
             try
             {
+                
                 Response res = new Response();
-                IList<Doctor> DoctorSchedule = _context.Doctors.ToList();
-                var query = (from c in _context.Schedules
-                             join u in _context.Doctors
-                             on c.DoctorId equals u.Id
-                             where c.DoctorId == docId
-                             select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();
+                IList<Schedule> doctorSchedule = DocSchedule(doctorId).ToList();
+                foreach (Schedule s in doctorSchedule)
+                {
+                    if((startTime>=s.StartTime&& endTime <= s.EndTime)||(startTime >= s.StartTime && startTime <= s.EndTime)||(endTime >= s.StartTime && endTime <= s.EndTime)||(startTime<=s.StartTime&&endTime>=s.EndTime))
+                    {
+                        res.Status = false;
+                        res.Result = null;
+                        res.Message = "This time slot is not free. Please select another time slot.";
+                        return Ok(res);
+                    }
+                }
+
+                Schedule schedule = new Schedule();
+
+                schedule.StartTime = startTime;
+                schedule.EndTime = endTime;
+                schedule.DoctorId = doctorId;
+                schedule.ClinicId = clinicId;
+
+                await _context.Schedules.AddAsync(schedule);
+                await _context.SaveChangesAsync();
+
                 res.Status = true;
-                res.Result = query;
-                res.Message = "FOLLOWING DOCTORS INCLUDED";
+
+                res.Message = "Time slot set seccessfully.";
+
                 return Ok(res);
             }
             catch (Exception ex)
