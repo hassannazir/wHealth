@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace wHealthApi.Models
+namespace wHealthApi
 {
-    public partial class wHealthappDbContext : DbContext
+    public partial class whealthappdbContext : DbContext
     {
-        public wHealthappDbContext()
+        public whealthappdbContext()
         {
         }
 
-        public wHealthappDbContext(DbContextOptions<wHealthappDbContext> options)
+        public whealthappdbContext(DbContextOptions<whealthappdbContext> options)
             : base(options)
         {
         }
@@ -23,16 +23,16 @@ namespace wHealthApi.Models
         public virtual DbSet<Doctorclinic> Doctorclinics { get; set; }
         public virtual DbSet<General> Generals { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=HAFIZHASSAN\\HAFIZHASSAN;Database=wHealthappDb;User ID=sa;Password=hassan123;Trusted_Connection=True;");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Name=ConnectionStrings:wHealthCS");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,9 +40,9 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
-
                 entity.ToTable("appointment");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
 
@@ -55,10 +55,6 @@ namespace wHealthApi.Models
                     .HasColumnName("diagnose");
 
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
 
                 entity.Property(e => e.PatientId).HasColumnName("patient_id");
 
@@ -77,17 +73,15 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<Clinic>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
-
                 entity.ToTable("clinic");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address).HasColumnName("address");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .HasColumnName("email");
-
-                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -104,9 +98,9 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<Doctor>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
-
                 entity.ToTable("doctor");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address).HasColumnName("address");
 
@@ -117,10 +111,6 @@ namespace wHealthApi.Models
                 entity.Property(e => e.Experience)
                     .HasMaxLength(50)
                     .HasColumnName("experience");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
 
                 entity.Property(e => e.LicenseNo)
                     .HasMaxLength(50)
@@ -143,17 +133,13 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<Doctorclinic>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
-
                 entity.ToTable("doctorclinic");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
 
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
@@ -162,13 +148,9 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<General>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
-
                 entity.ToTable("general");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -181,19 +163,15 @@ namespace wHealthApi.Models
 
             modelBuilder.Entity<Patient>(entity =>
             {
-                entity.HasKey(e=>e.Id).HasName("id");
-
                 entity.ToTable("patient");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address).HasColumnName("address");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .HasColumnName("email");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -206,19 +184,34 @@ namespace wHealthApi.Models
                 entity.Property(e => e.ProfilePic).HasColumnName("profile_pic");
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<Schedule>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("id");
+                entity.ToTable("schedule");
 
-                entity.ToTable("user");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
 
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.EndTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("end_time");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("start_time");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("user");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
+
+                entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(50)
