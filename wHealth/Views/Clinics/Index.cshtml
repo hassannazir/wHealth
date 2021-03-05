@@ -4,7 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
+@if (ViewBag.message != null)
+{
+    <h1 id="mess">@ViewBag.message</h1>
 
+}
+else 
+{
+        <h1 id="mess">hello @ViewBag.message1</h1>
+}
 
 <table class="table table-bordered table-hover content-wrapper table-striped table-responsive-sm" id="dataTable">
     <thead class="bg-gradient-info text-white">
@@ -47,9 +55,10 @@
                     @Html.DisplayFor(modelItem => item.PhoneNo)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>|
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <p>@item.Id</p>
+                    <a class="fa fa-pencil" asp-action="Edit" asp-route-id="@item.Id">Edit Clinic's Status</a>
+                    @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
                 </td>
             </tr>
         }
@@ -61,9 +70,12 @@
 {
     <script>
         $(document).ready(function () {
-        
-            $("#dataTable").DataTable();
+
            
+            $("#mess").fadeOut(5000);
+
+            $("#dataTable").DataTable();
+
 
         });
     </script>

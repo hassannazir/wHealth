@@ -32,6 +32,7 @@ namespace wHealthApi.Controllers
                 var clin = _context.Clinics.Where(e => e.Id == cid).FirstOrDefault();
 
                 DocWhoWillWork.Status = "Active";  //DOCTOR WILL GET TO WORK IN THE SPECIFIED CLINIC
+
                 _context.SaveChanges();
                 MailMessage em = new MailMessage();
                 em.To.Add(doc.Email);

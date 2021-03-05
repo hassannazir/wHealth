@@ -1,28 +1,38 @@
-﻿@model wHealth.User
+﻿ @model wHealth.User
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Status";
 }
+
+
+
+
+
 <div class="row content-wrapper">
     <div class="col-md-4">
-        <form asp-action="Edit" method="post">
+        
+        <form asp-action="EditClinicStatus"  enctype="multipart/form-data">
             
-            <input  asp-for="@Model.Id" class="form-control"/>
+            
        
+            <p>@Model.ClinicId</p>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <input type="hidden" asp-for="ClinicId" id="cid" name="cid" />
+                <label asp-for="Status" class="control-label">Select Status: </label><br />
+                <select asp-for="Status" class="form-control" name="Status" id="Status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inctive">InActive</option>
+                </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
          
             <div class="form-group">
-                <label asp-for="ClinicId" class="control-label"></label>
-                <input asp-for="ClinicId" class="form-control" />
-                <span asp-validation-for="ClinicId" class="text-danger"></span>
+
+                <input type="submit" value="Confirm Clinics Status Change" id="@Model.ClinicId" name="@Model.ClinicId" asp-for="ClinicId" class="btn btn-primary" />
+
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" id="@Model.Id" formmethod="post" class="btn btn-primary" />
-            </div>
+
+
         </form>
     </div>
 </div>
