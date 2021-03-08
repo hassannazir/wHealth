@@ -122,7 +122,78 @@ namespace wHealthApi.Controllers
                 throw;
             }
 
+           
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ActiveDoctors(int Cid)
+        {
+            try
+            {
+                Response res = new Response();
 
+                var query = (from c in _context.Doctors
+                             join u in _context.Doctorclinics
+                             on c.Id equals u.DoctorId
+                             where u.ClinicId == Cid
+                             where u.Status == "Active"
+                             select new { c.Id, c.Name, c.Email, c.PhoneNo, c.Address, c.ProfilePic, c.LicenseNo, c.Qualification, c.Experience }).ToList();
+
+                if (!query.Any())
+                {
+                    res.Status = false;
+
+                    res.Result = query;
+                    res.Message = "No active Doctor";
+                    return Ok(res);
+                }
+
+                res.Status = true;
+                res.Result = query;
+                res.Message = "All active doctors in this Clinic";
+                return Ok(res);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete]
+        [AllowAnonymous]
+        public IActionResult InActiveDoctors(int Cid)
+        {
+            try
+            {
+                Response res = new Response();
+
+                var query = (from c in _context.Doctors
+                             join u in _context.Doctorclinics
+                             on c.Id equals u.DoctorId
+                             where u.ClinicId == Cid
+                             where u.Status == "InActive"
+                             select new { c.Id, c.Name, c.Email, c.PhoneNo, c.Address, c.ProfilePic, c.LicenseNo, c.Qualification, c.Experience }).ToList();
+
+                if (!query.Any())
+                {
+                    res.Status = false;
+
+                    res.Result = query;
+                    res.Message = "No InActive Doctor";
+                    return Ok(res);
+                }
+
+                res.Status = true;
+                res.Result = query;
+                res.Message = "All InActive doctors in this Clinic";
+                return Ok(res);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

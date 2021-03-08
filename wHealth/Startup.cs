@@ -27,8 +27,10 @@ namespace wHealth
             services.AddDbContext<whealthappdbContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("wHealthCS")));
 
-            
+
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +48,7 @@ namespace wHealth
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
 
             app.UseRouting();
 
@@ -57,6 +60,7 @@ namespace wHealth
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseBrowserLink();
         }
     }
 }

@@ -84,36 +84,45 @@ namespace wHealthApi.Controllers
                 throw;
             }
 
-            response.Status = true;
             response.Message = "Your request has been SUBMITTED.And you will be informed if clinic APPROVED your request";
             return Ok(response);
         }
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public IActionResult ViewDocSchedule(int docId)
-        //{
-        //    try
-        //    {
-        //        Response res = new Response();
-        //        IList<Doctor> DoctorSchedule = _context.Doctors.ToList();
-        //        var query = (from c in _context.Schedules
-        //                     join u in _context.Doctors
-        //                     on c.DoctorId equals u.Id
-        //                     where c.DoctorId == docId
-        //                     select new { u.Id, u.Name, u.PhoneNo, u.Email, u.Address, u.Experience, u.LicenseNo, u.Qualification }).ToList();
-        //        res.Status = true;
-        //        res.Result = query;
-        //        res.Message = "FOLLOWING DOCTORS INCLUDED";
-        //        return Ok(res);
-        //    }
-        //    catch (Exception ex)
-        //    {
+        [HttpDelete]
+        [AllowAnonymous]
+        public IActionResult ViewDocSchedule(int docId)
+        {
+            try
+            {
+                Response res = new Response();
+                
+                var query = (from c in _context.Schedules
+                             join u in _context.Doctors
+                             on c.DoctorId equals u.Id
+                             where c.DoctorId == docId
+                             select new { c.StartTime, c.EndTime, c.ClinicId }).ToList();
+                if (!query.Any())
+                {
+                    res.Status = false;
 
-        //        throw;
-        //    }
-        //}
+                    res.Result = query;
+                    res.Message = "this doctor has not set any Schedule";
+                    return Ok(res);
+                }
+                res.Status = true;
+
+                res.Result = query;
+                res.Message = "Here's the doctor's Schedule";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        
 
     }
 }
