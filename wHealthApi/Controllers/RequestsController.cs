@@ -52,6 +52,7 @@ namespace wHealthApi.Controllers
                 cli.EnableSsl = false;
                 await cli.SendMailAsync(em);
                 Response r = new Response();
+                r.Status = true;
                 r.Message = "You approved the request, Successfully.";
                 return Ok(r);
 
