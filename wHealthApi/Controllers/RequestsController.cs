@@ -47,6 +47,7 @@ namespace wHealthApi.Controllers
                 SmtpClient cli = new SmtpClient();
                 cli.Host = "116.202.175.92";
                 cli.Port = 25;
+
                 cli.UseDefaultCredentials = false;
                 cli.Credentials = new NetworkCredential("dev@theta.solutions", "8xTc$NU?%5kCh.5L&,u#:o^S|oCp");
                 cli.EnableSsl = false;
