@@ -195,6 +195,7 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
+       
     }
 }
 

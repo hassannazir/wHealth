@@ -122,7 +122,33 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
-        
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult clincsOfLoggoedInDoctors(int doc_id)
+        {
+            try
+            {
+                Response res = new Response();
+                IList<Clinic> ClinicList = _context.Clinics.ToList();
+                var query = (from dc in _context.Doctorclinics
+                             join c in _context.Clinics
+                             on dc.ClinicId equals c.Id
+                             where dc.DoctorId == doc_id
+                             select new { c.Name, c.Email, c.Address, c.PhoneNo }).ToList();
+                res.Status = true;
+                res.Result = query;
+                res.Message = "YOU ARE WORKING IN FOLLOWING CLINICS";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+        }
+
 
     }
 }
