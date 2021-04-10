@@ -135,7 +135,7 @@ namespace wHealthApi.Controllers
                              join c in _context.Clinics
                              on dc.ClinicId equals c.Id
                              where dc.DoctorId ==doc_id && dc.Status=="Active"
-                             select new { c.Name, c.Email, c.Address, c.PhoneNo }).ToList();
+                             select new { c.Name, c.Email, c.Address, c.PhoneNo,c.RegistrationNo,c.Id }).ToList();
                 res.Status = true;
                 res.Result = query;
                 res.Message = "YOU ARE WORKING IN FOLLOWING CLINICS";

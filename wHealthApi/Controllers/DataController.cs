@@ -20,23 +20,28 @@ namespace wHealthApi.Controllers
 
 
 
-        //RETURNING ALL THE ACTIVE STATUS CLINICS DATA
+        //RETURNING ALL THE REQUIRED CLINICS DATA
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Get()
+        public IActionResult Get(int doc_id)
         {
             try
             {
+
                 Response res = new Response();
-                IList<Clinic> ClinicList = _context.Clinics.ToList();
-                var query = (from c in _context.Clinics
-                             join u in _context.Users
-                             on c.Id equals u.ClinicId
-                             where u.Status == "Active"
+
+              IList <Clinic> ClinicList = _context.Clinics.ToList();
+                IList<User> usersList = _context.Users.ToList();
+                IList<Doctorclinic> docClincicList = _context.Doctorclinics.ToList();
+
+                var result = (from c in ClinicList
+                             join u in usersList on c.Id equals u.ClinicId                             
+                             where  !docClincicList.Any(dc=>dc.ClinicId==c.Id)
                              select new { c.Email, c.Name, c.PhoneNo, c.RegistrationNo, c.Id, c.Address }).ToList();
 
+
                 res.Status = true;
-                res.Result = query;
+                res.Result = result;
                 res.Message = "FOLLOWING CLINICS AVAILABLE";
                 return Ok(res);
 
@@ -49,10 +54,13 @@ namespace wHealthApi.Controllers
         }
 
 
+    
+
+
         //RETURNING A SPECIFIC USER DATA
         [HttpPut]
         [AllowAnonymous]
-        public IActionResult Get(int id)
+        public IActionResult GetSpecific(int id)
         {
             try
             {
