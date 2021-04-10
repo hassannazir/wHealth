@@ -87,6 +87,7 @@ namespace wHealthApi.Controllers
             }
 
             response.Message = "Your request has been SUBMITTED.And you will be informed if clinic APPROVED your request";
+            response.Status = true;
             return Ok(response);
         }
 
