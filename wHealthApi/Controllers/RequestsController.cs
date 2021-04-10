@@ -47,13 +47,11 @@ namespace wHealthApi.Controllers
                 SmtpClient cli = new SmtpClient();
                 cli.Host = "116.202.175.92";
                 cli.Port = 25;
-
                 cli.UseDefaultCredentials = false;
                 cli.Credentials = new NetworkCredential("dev@theta.solutions", "8xTc$NU?%5kCh.5L&,u#:o^S|oCp");
                 cli.EnableSsl = false;
                 await cli.SendMailAsync(em);
                 Response r = new Response();
-                r.Status = true;
                 r.Message = "You approved the request, Successfully.";
                 return Ok(r);
 
@@ -136,7 +134,7 @@ namespace wHealthApi.Controllers
                 var query = (from dc in _context.Doctorclinics
                              join c in _context.Clinics
                              on dc.ClinicId equals c.Id
-                             where dc.DoctorId == doc_id
+                             where dc.DoctorId ==doc_id && dc.Status=="Active"
                              select new { c.Name, c.Email, c.Address, c.PhoneNo }).ToList();
                 res.Status = true;
                 res.Result = query;
