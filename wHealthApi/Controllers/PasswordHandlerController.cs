@@ -12,7 +12,7 @@ using wHealthApi.Models;
 
 namespace wHealthApi.Controllers
 {
-    [Route("api/[controller]")]
+   
     [ApiController]
     public class PasswordHandlerController :BaseController
     {
