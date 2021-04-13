@@ -12,16 +12,14 @@ using wHealthApi.Models;
 
 namespace wHealthApi.Controllers
 {
-   
-    [ApiController]
     public class PasswordHandlerController :BaseController
     {
-
         private readonly wHealthappDbContext _context;
         public PasswordHandlerController(wHealthappDbContext context)
         {
             _context = context;
         }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> SendCodeToEmail(string usrname)

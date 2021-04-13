@@ -89,12 +89,6 @@ namespace wHealthApi.Controllers
             return Ok(response);
         }
 
-
-        
-       
-
-        
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, TimeSpan startTime,TimeSpan endTime,DateTime startDate, DateTime endDate, bool recurring, string day)
@@ -174,6 +168,7 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
+        
         [HttpPost]
         [AllowAnonymous]
         public IActionResult clincsOfLoggoedInDoctors(int doc_id)
