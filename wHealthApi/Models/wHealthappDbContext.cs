@@ -255,12 +255,28 @@ namespace wHealthApi.Models
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 
                 entity.Property(e => e.EndTime)
-                    .HasColumnType("datetime")
+                    .HasColumnType("time")
                     .HasColumnName("end_time");
 
                 entity.Property(e => e.StartTime)
-                    .HasColumnType("datetime")
+                    .HasColumnType("time")
                     .HasColumnName("start_time");
+
+                entity.Property(e => e.StartDate)
+                   .HasColumnType("datetime")
+                   .HasColumnName("start_date");
+
+
+                entity.Property(e => e.EndDate)
+                   .HasColumnType("datetime")
+                   .HasColumnName("end_date");
+
+                entity.Property(e => e.Recurring)
+                    .HasColumnName("recurring");
+
+                entity.Property(e => e.Day)
+                     .HasColumnName("day");
+
             });
 
             OnModelCreatingPartial(modelBuilder);
