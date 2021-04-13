@@ -8,9 +8,20 @@ namespace wHealthApi
     public partial class Schedule
     {
         public int Id { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
         public int? DoctorId { get; set; }
         public int? ClinicId { get; set; }
+
+        public String? Day { get; set; }
+        public bool? Recurring { get; set; }
+
+
+
+
     }
 }
