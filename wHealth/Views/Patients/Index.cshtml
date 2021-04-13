@@ -1,4 +1,4 @@
-﻿@model IEnumerable<wHealth.Clinic>
+﻿@model IEnumerable<wHealth.Patient>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,9 +12,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationNo)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
@@ -24,7 +22,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNo)
             </th>
-            
+
         </tr>
     </thead>
     <tbody>
@@ -34,9 +32,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RegistrationNo)
-                </td>
+              
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
@@ -46,12 +42,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNo)
                 </td>
-                <td>
-                    <p>@item.Id</p>
-                    <a class="fa fa-pencil" asp-action="Edit" asp-route-id="@item.Id">Edit Clinic's Status</a>
-                    @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-                </td>
+
             </tr>
         }
     </tbody>
@@ -63,8 +54,8 @@
     <script>
         $(document).ready(function () {
 
-           
-            
+
+
 
             $("#dataTable").DataTable();
 
