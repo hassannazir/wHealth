@@ -20,6 +20,8 @@ namespace wHealthApi
         public String? Day { get; set; }
         public bool? Recurring { get; set; }
 
+        public int? SlotLength { get; set; }
+
 
 
 

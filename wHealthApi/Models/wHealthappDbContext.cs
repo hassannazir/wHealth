@@ -277,6 +277,9 @@ namespace wHealthApi.Models
                 entity.Property(e => e.Day)
                      .HasColumnName("day");
 
+                entity.Property(e => e.SlotLength)
+                     .HasColumnName("slot_length");
+
             });
 
             OnModelCreatingPartial(modelBuilder);

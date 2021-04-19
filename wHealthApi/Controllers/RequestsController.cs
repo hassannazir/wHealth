@@ -91,7 +91,7 @@ namespace wHealthApi.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, TimeSpan startTime,TimeSpan endTime,DateTime startDate, DateTime endDate, bool recurring, string day)
+        public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, TimeSpan startTime,TimeSpan endTime,DateTime startDate, DateTime endDate, bool recurring, string day, int length)
         {
             try
             {
@@ -147,6 +147,7 @@ namespace wHealthApi.Controllers
                     schedule.EndDate = endDate;
                     schedule.Day = day;
                     schedule.Recurring = recurring;
+                    schedule.SlotLength = length;
 
                     await _context.Schedules.AddAsync(schedule);
                     await _context.SaveChangesAsync();
@@ -203,7 +204,7 @@ namespace wHealthApi.Controllers
               //  IList<Schedule> scheduleList = _context.Schedules.ToList();
                 var query = (from c in _context.Schedules
                              where c.DoctorId == doc_id && c.ClinicId == clinicId
-                             select new { c.Id, c.StartTime, c.EndTime, c.DoctorId, c.ClinicId, c.Day, c.Recurring,c.StartDate,c.EndDate }).ToList();
+                             select new { c.Id, c.StartTime, c.EndTime, c.DoctorId, c.ClinicId, c.Day, c.Recurring,c.StartDate,c.EndDate, c.SlotLength}).ToList();
                 res.Status = true;
                 res.Result = query;
                 res.Message = "Here's the schedule of the required doctor in required clinic";
