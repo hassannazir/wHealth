@@ -18,8 +18,6 @@ namespace wHealthApi.Controllers
             _context = context;
         }
 
-
-
         //RETURNING ALL THE Available CLINICS List
         [HttpGet]
         [AllowAnonymous]
@@ -55,10 +53,6 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
-
-
-    
-
 
         //RETURNING A SPECIFIC USER DATA
         [HttpPut]
@@ -135,6 +129,7 @@ namespace wHealthApi.Controllers
 
            
         }
+        
         [HttpPost]
         [AllowAnonymous]
         public IActionResult ActiveDoctors(int Cid)

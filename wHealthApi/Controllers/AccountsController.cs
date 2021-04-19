@@ -25,7 +25,7 @@ namespace wHealthApi.Controllers
 
         public AccountsController(IConfiguration config, wHealthappDbContext context)
         {
-            Config = config;
+             Config = config;
             _context = context;
         }
 

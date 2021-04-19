@@ -89,12 +89,6 @@ namespace wHealthApi.Controllers
             return Ok(response);
         }
 
-
-        
-       
-
-        
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, TimeSpan startTime,TimeSpan endTime,DateTime startDate, DateTime endDate, bool recurring, string day)
@@ -172,6 +166,7 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
+        
         [HttpPost]
         [AllowAnonymous]
         public IActionResult clincsOfLoggoedInDoctors(int doc_id)
@@ -198,7 +193,30 @@ namespace wHealthApi.Controllers
 
 
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult scheduleOfDoctor(int doc_id,int clinicId)
+        {
+            try
+            {
+                Response res = new Response();
+              //  IList<Schedule> scheduleList = _context.Schedules.ToList();
+                var query = (from c in _context.Schedules
+                             where c.DoctorId == doc_id && c.ClinicId == clinicId
+                             select new { c.Id, c.StartTime, c.EndTime, c.DoctorId, c.ClinicId, c.Day, c.Recurring,c.StartDate,c.EndDate }).ToList();
+                res.Status = true;
+                res.Result = query;
+                res.Message = "Here's the schedule of the required doctor in required clinic";
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
+
+
+        }
 
     }
 }
