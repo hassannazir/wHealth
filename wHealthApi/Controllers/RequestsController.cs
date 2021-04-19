@@ -79,7 +79,7 @@ namespace wHealthApi.Controllers
                 _context.Doctorclinics.Add(docClinicData);
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
@@ -89,40 +89,86 @@ namespace wHealthApi.Controllers
             return Ok(response);
         }
 
-
-        [HttpDelete]
+        [HttpPost]
         [AllowAnonymous]
-        public IActionResult ViewDocSchedule(int docId)
+        public async Task<IActionResult> setDocSchedule(int doctorId, int clinicId, TimeSpan startTime,TimeSpan endTime,DateTime startDate, DateTime endDate, bool recurring, string day)
         {
             try
             {
+
                 Response res = new Response();
-                
-                var query = (from c in _context.Schedules
-                             join u in _context.Doctors
-                             on c.DoctorId equals u.Id
-                             where c.DoctorId == docId
-                             select new { c.StartTime, c.EndTime, c.ClinicId }).ToList();
-                if (!query.Any())
-                {
-                    res.Status = false;
+                IList<Schedule> ilist = _context.Schedules.Where(sc => sc.DoctorId == doctorId).ToList();
+                Schedule schedule = new Schedule();
 
-                    res.Result = query;
-                    res.Message = "this doctor has not set any Schedule";
-                    return Ok(res);
+                if (ilist != null) {
+
+                    foreach (Schedule s in ilist)
+                    {
+                        if (s.Day == day && recurring)
+                        {
+                            if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+                            {
+                                if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
+                                {
+                                    if (s.ClinicId != clinicId)
+                                    {
+                                        res.Status = false;
+                                        res.Result = null;
+                                        res.Message = "This time slot is not free. Please select another time slot.";
+                                        return Ok(res);
+                                    }
+                                }
+                            }
+                            
+                        }
+                        else
+                        {
+                            if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+                            {
+                                if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
+                                {
+                                    if (s.ClinicId != clinicId)
+                                    {
+                                        res.Status = false;
+                                        res.Result = null;
+                                        res.Message = "This time slot is not free. Please select another time slot.";
+                                        return Ok(res);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
-                res.Status = true;
 
-                res.Result = query;
-                res.Message = "Here's the doctor's Schedule";
-                return Ok(res);
+                    schedule.StartTime = startTime;
+                    schedule.EndTime = endTime;
+                    schedule.DoctorId = doctorId;
+                    schedule.ClinicId = clinicId;
+                    schedule.StartDate = startDate;
+                    schedule.EndDate = endDate;
+                    schedule.Day = day;
+                    schedule.Recurring = recurring;
+
+                    await _context.Schedules.AddAsync(schedule);
+                    await _context.SaveChangesAsync();
+
+                    res.Status = true;
+
+                    res.Message = "Time slot set seccessfully.";
+
+                    return Ok(res);
+
+               
             }
-            catch (Exception ex)
+            
+            catch (Exception )
             {
 
                 throw;
             }
         }
+        
         [HttpPost]
         [AllowAnonymous]
         public IActionResult clincsOfLoggoedInDoctors(int doc_id)

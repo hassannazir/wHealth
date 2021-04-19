@@ -18,30 +18,31 @@ namespace wHealthApi.Controllers
             _context = context;
         }
 
-
-
-        //RETURNING ALL THE REQUIRED CLINICS DATA
+        //RETURNING ALL THE Available CLINICS List
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Get(int doc_id)
+        public IActionResult Get(int doctorId)
         {
             try
             {
 
                 Response res = new Response();
 
-              IList <Clinic> ClinicList = _context.Clinics.ToList();
+                IList <Clinic> ClinicList = _context.Clinics.ToList();
                 IList<User> usersList = _context.Users.ToList();
-                IList<Doctorclinic> docClincicList = _context.Doctorclinics.ToList();
+                IList<Doctorclinic> docClincicList = _context.Doctorclinics.Where(i=>i.DoctorId== doctorId).ToList();
+                IList<Clinic> newList = new List<Clinic>();
 
-                var result = (from c in ClinicList
-                             join u in usersList on c.Id equals u.ClinicId                             
-                             where  !docClincicList.Any(dc=>dc.ClinicId==c.Id)
-                             select new { c.Email, c.Name, c.PhoneNo, c.RegistrationNo, c.Id, c.Address }).ToList();
-
+                foreach(var clin in ClinicList)
+                {
+                    if (!(docClincicList.Any(i => i.ClinicId == clin.Id)) && (usersList.Any(j => j.ClinicId == clin.Id && j.Status == "Active")))
+                    {
+                        newList.Add(clin);
+                    }
+                }
 
                 res.Status = true;
-                res.Result = result;
+                res.Result = newList;
                 res.Message = "FOLLOWING CLINICS AVAILABLE";
                 return Ok(res);
 
@@ -52,10 +53,6 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
-
-
-    
-
 
         //RETURNING A SPECIFIC USER DATA
         [HttpPut]
@@ -132,6 +129,7 @@ namespace wHealthApi.Controllers
 
            
         }
+        
         [HttpPost]
         [AllowAnonymous]
         public IActionResult ActiveDoctors(int Cid)
@@ -203,7 +201,6 @@ namespace wHealthApi.Controllers
                 throw;
             }
         }
-    
        
     }
 }

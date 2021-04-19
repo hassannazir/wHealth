@@ -20,6 +20,7 @@ namespace wHealthApi.Controllers
         {
             _context = context;
         }
+        
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -250,7 +251,6 @@ namespace wHealthApi.Controllers
 
         [HttpPut]
         [AllowAnonymous]
-
         public async Task<ActionResult> Edit(int id, AppUser appUser)
         {
             try

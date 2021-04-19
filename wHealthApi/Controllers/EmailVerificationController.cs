@@ -18,9 +18,6 @@ namespace wHealthApi.Controllers
             _context = context;
         }
 
-
-
-
         [HttpGet("id")]
         [AllowAnonymous]
         public IActionResult Verify(String id)
