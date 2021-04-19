@@ -49,7 +49,7 @@ namespace wHealthApi.Controllers
                     httpResponse.Message = "YOU NEED TO VERIFY YOUR EMAIL FIRST.";
                     return Ok(httpResponse);
                 }
-                else
+                else if (user.Status != "Active" && user.Type == "Clinic")
                 {
                     httpResponse.Status = false;
                     httpResponse.Message = "You will be informed when admin approves your request. Untill then, Please wait.";

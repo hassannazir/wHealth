@@ -9,7 +9,7 @@ using wHealthApi.Models;
 
 namespace wHealthApi.Controllers
 {
-    public class EmailVerificationController : BaseController
+    public class EmailVerificationController : Controller
     {
 
         private readonly wHealthappDbContext _context;
