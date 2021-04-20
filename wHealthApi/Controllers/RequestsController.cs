@@ -204,7 +204,7 @@ namespace wHealthApi.Controllers
               //  IList<Schedule> scheduleList = _context.Schedules.ToList();
                 var query = (from c in _context.Schedules
                              where c.DoctorId == doc_id && c.ClinicId == clinicId
-                             select new { c.Id, c.StartTime, c.EndTime, c.DoctorId, c.ClinicId, c.Day, c.Recurring,c.StartDate,c.EndDate, c.SlotLength}).ToList();
+                             select new { c.Id, StartTime=c.StartTime.ToString(),EndTime= c.EndTime.ToString(), c.DoctorId, c.ClinicId, c.Day, c.Recurring,c.StartDate,c.EndDate, c.SlotLength}).ToList();
                 res.Status = true;
                 res.Result = query;
                 res.Message = "Here's the schedule of the required doctor in required clinic";
