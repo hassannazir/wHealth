@@ -110,13 +110,12 @@ namespace wHealthApi.Controllers
                             {
                                 if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
                                 {
-                                    if (s.ClinicId != clinicId)
-                                    {
+                                   
                                         res.Status = false;
                                         res.Result = null;
                                         res.Message = "This time slot is not free. Please select another time slot.";
                                         return Ok(res);
-                                    }
+                                    
                                 }
                             }
                             
@@ -127,13 +126,12 @@ namespace wHealthApi.Controllers
                             {
                                 if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
                                 {
-                                    if (s.ClinicId != clinicId)
-                                    {
+                                   
                                         res.Status = false;
                                         res.Result = null;
                                         res.Message = "This time slot is not free. Please select another time slot.";
                                         return Ok(res);
-                                    }
+                                    
                                 }
                             }
                         }
@@ -222,7 +220,3 @@ namespace wHealthApi.Controllers
 
     }
 }
-
-
-
-
