@@ -97,10 +97,10 @@ namespace wHealthApi.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public  IActionResult GetAppointments()
+        public  IActionResult GetPendingOrBookedAppointments(int doctorId,int clinicId)
         {
             Response response = new Response();
-            IList<Appointment> appointmentList = _context.Appointments.ToList();
+            IList<Appointment> appointmentList = _context.Appointments.Where(i => i.DoctorId == doctorId && i.ClinicId == clinicId && i.Status!=0).ToList();
             if (appointmentList.Count() == 0)
             {
                 

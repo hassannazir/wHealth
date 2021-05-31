@@ -169,12 +169,8 @@ namespace wHealthApi.Controllers
 
 
                                 }
-                            }
-
-
-                        }
-                        else
-                        {
+                            }else
+                           {
                             if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
                             {
                                 if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
@@ -187,6 +183,9 @@ namespace wHealthApi.Controllers
                                     
                                 }
                             }
+                           }
+
+
                         }
 
                     }
