@@ -107,25 +107,71 @@ namespace wHealthApi.Controllers
                     if (recurring)
                     {
                         //for recurrinng schedule
-                        //check all rows with same day whether recurring or non-recurring
+                        //check same day rows of recurring rows
+                        //check s.date - e.date all days of non-recurring rows
                         foreach (Schedule s in ilist)
                         {
 
-                            if (s.Day == day)
+                            if (s.Day == day && s.Recurring == true)
                             {
-                                if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+
+                                if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
                                 {
-                                    if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
-                                    {
+
 
                                         res.Status = false;
                                         res.Result = null;
                                         res.Message = "This time slot is not free. Please select another time slot.";
                                         return Ok(res);
 
-                                    }
                                 }
                             }
+                            else if (!s.Recurring) 
+                            {
+                                
+                                if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+                                {
+                                    DateTime d;
+                                    if (s.StartDate > startDate)
+                                    {
+                                        d = s.StartDate;
+                                    }
+                                    else
+                                    {
+                                        d = startDate;
+                                    }
+
+                                    DateTime dt;
+                                    if (s.EndDate < endDate)
+                                    {
+                                        dt = s.EndDate;
+                                    }
+                                    else
+                                    {
+                                        dt = endDate;
+                                    }
+
+
+                                    for (d = d; d <= dt; d = d.AddDays(1))
+                                    {
+                                        if (d.ToString("dddd") == day)
+                                        {
+                                            if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
+                                            {
+                                                res.Status = false;
+                                                res.Result = null;
+                                                res.Message = "This time slot is not free. Please select another time slot.";
+                                                return Ok(res);
+
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                            }
+
+
                         }
 
 
@@ -133,12 +179,53 @@ namespace wHealthApi.Controllers
                     else
                     {
                         //for non-recurring schedule
-                        //check only that exact date
+                        //check time period of other non-recurring rows
                         //check same day of other recurring rows
 
                         foreach (Schedule s in ilist)
                         {
-                            if (s.StartDate == startDate)
+                            if (s.Recurring)
+                            {
+
+                                if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+                                {
+                                    DateTime d;
+                                    if (s.StartDate > startDate)
+                                    {
+                                        d = s.StartDate;
+                                    }
+                                    else
+                                    {
+                                        d =startDate;
+                                    }
+
+                                    DateTime dt;
+                                    if (s.EndDate < endDate)
+                                    {
+                                        dt = s.EndDate;
+                                    }
+                                    else
+                                    {
+                                        dt = endDate ;
+                                    }
+                                    //infinite loop ... AddDays does not increment d
+                                    for (d =d ; d <= dt; d=d.AddDays(1))
+                                    {
+                                        if (d.ToString("dddd") == s.Day)
+                                        {
+                                            if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
+                                            {
+                                                res.Status = false;
+                                                res.Result = null;
+                                                res.Message = "This time slot is not free. Please select another time slot.";
+                                                return Ok(res);
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
                                 {
@@ -153,23 +240,6 @@ namespace wHealthApi.Controllers
                                     }
                                 }
                             }
-                            if (s.Day == day && s.Recurring == true)
-                            {
-                                if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
-                                {
-                                    if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
-                                    {
-
-                                        res.Status = false;
-                                        res.Result = null;
-                                        res.Message = "This time slot is not free. Please select another time slot.";
-                                        return Ok(res);
-
-                                    }
-                                   
-                                }
-                            }
-
                         }
                     }
 
