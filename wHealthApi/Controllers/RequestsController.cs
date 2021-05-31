@@ -102,23 +102,76 @@ namespace wHealthApi.Controllers
 
                 if (ilist != null) {
 
-                    foreach (Schedule s in ilist)
+                    // either recurring or non-recurring
+                    if (recurring)
                     {
-                        if (s.Day == day && recurring)
+                        //for recurrinng schedule
+                        //check same day rows of recurring rows
+                        //check s.date - e.date all days of non-recurring rows
+                        //
+                        foreach (Schedule s in ilist)
                         {
-                            if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+
+                            if (s.Day == day && s.Recurring == true)
                             {
+
                                 if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
                                 {
-                                   
+
+
                                         res.Status = false;
                                         res.Result = null;
                                         res.Message = "This time slot is not free. Please select another time slot.";
                                         return Ok(res);
-                                    
+
                                 }
                             }
-                            
+                            else if (!s.Recurring) 
+                            {
+                                
+                                if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
+                                {
+                                    DateTime d;
+                                    if (s.StartDate > startDate)
+                                    {
+                                        d = s.StartDate;
+                                    }
+                                    else
+                                    {
+                                        d = startDate;
+                                    }
+
+                                    DateTime dt;
+                                    if (s.EndDate < endDate)
+                                    {
+                                        dt = s.EndDate;
+                                    }
+                                    else
+                                    {
+                                        dt = endDate;
+                                    }
+
+
+                                    for (d = d; d <= dt; d = d.AddDays(1))
+                                    {
+                                        if (d.ToString("dddd") == day)
+                                        {
+                                            if ((startTime >= s.StartTime && endTime <= s.EndTime) || (startTime >= s.StartTime && startTime <= s.EndTime) || (endTime >= s.StartTime && endTime <= s.EndTime) || (startTime <= s.StartTime && endTime >= s.EndTime))
+                                            {
+                                                res.Status = false;
+                                                res.Result = null;
+                                                res.Message = "This time slot is not free. Please select another time slot.";
+                                                return Ok(res);
+
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                            }
+
+
                         }
                         else
                         {
