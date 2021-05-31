@@ -109,6 +109,7 @@ namespace wHealthApi.Controllers
                         //for recurrinng schedule
                         //check same day rows of recurring rows
                         //check s.date - e.date all days of non-recurring rows
+                        //
                         foreach (Schedule s in ilist)
                         {
 
