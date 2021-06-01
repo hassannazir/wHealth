@@ -161,6 +161,49 @@ namespace wHealthApi.Controllers
 
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ApproveOrCancelPatientRequest(int appointmentId,bool status)
+        {
+            Response res = new Response();
+            try
+            {
+                Appointment appointment = await _context.Appointments.FindAsync(appointmentId);
+                if (appointment == null)
+                {
+                        res.Status = false;
+                        res.Message = "Appointment not found";
+                        return Ok(res);
+                }
+                if (status)
+                {
+
+                    appointment.Status = 2;
+                    _context.Appointments.Update(appointment);
+                    await _context.SaveChangesAsync();
+                    res.Status = true;
+                    res.Message = "Booking Confirmed";
+                    return Ok(res);
+                }
+                else
+                {
+                    appointment.Status = 0;
+                    _context.Appointments.Update(appointment);
+                    await _context.SaveChangesAsync();
+                    res.Status = true;
+                    res.Message = "Booking Cancelled";
+                    return Ok(res);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
 
     }
 }
