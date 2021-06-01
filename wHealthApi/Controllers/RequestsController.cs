@@ -95,6 +95,7 @@ namespace wHealthApi.Controllers
         {
             try
             {
+                //Finalized and pushed again
 
                 Response res = new Response();
                 IList<Schedule> ilist = _context.Schedules.Where(sc => sc.DoctorId == doctorId).ToList();
@@ -110,6 +111,7 @@ namespace wHealthApi.Controllers
                         //check same day rows of recurring rows
                         //check s.date - e.date all days of non-recurring rows
                         //
+                        
                         foreach (Schedule s in ilist)
                         {
 
