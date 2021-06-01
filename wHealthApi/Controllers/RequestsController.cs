@@ -129,8 +129,7 @@ namespace wHealthApi.Controllers
                                 }
                             }
                             else if (!s.Recurring) 
-                            {
-                                
+                            { 
                                 if ((startDate >= s.StartDate && endDate <= s.EndDate) || (startDate >= s.StartDate && startDate <= s.EndDate) || (endDate >= s.StartDate && endDate <= s.EndDate) || (startDate <= s.StartDate && endDate >= s.EndDate))
                                 {
                                     DateTime d;
@@ -152,8 +151,6 @@ namespace wHealthApi.Controllers
                                     {
                                         dt = endDate;
                                     }
-
-
                                     for (d = d; d <= dt; d = d.AddDays(1))
                                     {
                                         if (d.ToString("dddd") == day)
@@ -168,8 +165,6 @@ namespace wHealthApi.Controllers
                                             }
                                         }
                                     }
-
-
                                 }
                             }else
                            {

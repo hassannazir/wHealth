@@ -20,9 +20,9 @@ namespace wHealthApi.Controllers
 
 
 
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> BookAppointmentAsync(int patientId,int doctorId,int clinicId,int status,TimeSpan startTime,  DateTime date,int scheduleId, TimeSpan endTime)
+        public async Task<IActionResult> BookAppointment(int patientId,int doctorId,int clinicId,int status,TimeSpan startTime,  DateTime date,int scheduleId, TimeSpan endTime)
         {
 
 
@@ -95,6 +95,7 @@ namespace wHealthApi.Controllers
 
 
         }
+        
         [HttpGet]
         [AllowAnonymous]
         public  IActionResult GetPendingOrBookedAppointments(int doctorId,int clinicId)
@@ -117,6 +118,45 @@ namespace wHealthApi.Controllers
                 response.Status = true;
                 return Ok(response);
 
+            }
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public  IActionResult PatientsBookingRequests(int doc_id)
+        {
+            Response res = new Response();
+            try
+            {
+              
+                var query =  (from p in _context.Patients
+                                   join app in _context.Appointments
+                                   on p.Id equals app.PatientId
+                                   join c in _context.Clinics
+                                   on app.ClinicId equals c.Id
+                                   where app.DoctorId == doc_id && app.Status == 1
+                                   select new { appointmentId = app.Id, patientName = p.Name, clinicName = c.Name, startTime=app.StartTime.ToString(), endTime=app.EndTime.ToString(), app.Date }).ToList();
+
+                if (query!=null)
+                {
+                    res.Status = true;
+                    res.Result = query;
+                    res.Message = "Patients Booking Requests..";
+                    return Ok(res);
+                }
+                else
+                {
+                    res.Status = false;
+                    res.Message = "Patients Booking List is Empty";
+                    return Ok(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                res.Status = false;
+                res.Message = "Error Occurs..";
+                return Ok(res);
             }
 
         }
