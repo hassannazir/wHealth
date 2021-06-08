@@ -266,6 +266,44 @@ namespace wHealthApi.Models
                     .HasColumnName("username");
             });
 
+            modelBuilder.Entity<Schedule>(entity =>
+            {
+                entity.ToTable("schedule");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
+
+                entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
+
+                entity.Property(e => e.EndTime)
+                    .HasColumnType("time")
+                    .HasColumnName("end_time");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnType("time")
+                    .HasColumnName("start_time");
+
+                entity.Property(e => e.StartDate)
+                   .HasColumnType("datetime")
+                   .HasColumnName("start_date");
+
+
+                entity.Property(e => e.EndDate)
+                   .HasColumnType("datetime")
+                   .HasColumnName("end_date");
+
+                entity.Property(e => e.Recurring)
+                    .HasColumnName("recurring");
+
+                entity.Property(e => e.Day)
+                     .HasColumnName("day");
+
+                entity.Property(e => e.SlotLength)
+                     .HasColumnName("slot_length");
+
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
