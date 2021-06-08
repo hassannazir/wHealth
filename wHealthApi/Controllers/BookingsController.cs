@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using wHealthApi.Models;
 
@@ -22,69 +24,111 @@ namespace wHealthApi.Controllers
 
         [HttpPut]
         [AllowAnonymous]
-        public async Task<IActionResult> BookAppointmentAsync(int patientId,int doctorId,int clinicId,int status,TimeSpan startTime,  DateTime date,int scheduleId, TimeSpan endTime)
+        public async Task<IActionResult> BookAppointmentAsync(int patientId,int doctorId,int clinicId,int status,TimeSpan startTime, TimeSpan endTime, DateTime date)
         {
+            Response response = new Response();
+            Appointment ap = new Appointment();
+            ap.PatientId = patientId;
+            ap.DoctorId = doctorId;
+            ap.ClinicId = clinicId;
+            ap.Status = status;
+            ap.StartTime = startTime;
+            ap.Date = date;
+            
+            ap.EndTime = endTime;
 
 
             try
             {
-                Response response = new Response();
-                Schedule s = await _context.Schedules.FindAsync(scheduleId);
-                Appointment a = new Appointment();
-                a.PatientId = patientId;
-                a.DoctorId = doctorId;
-                a.ClinicId = clinicId;
-                a.Status = status;
-                a.StartTime = startTime;
-                a.Date = date;
-                a.ScheduleId = scheduleId;
-                a.EndTime = endTime;
 
-
-                IList<Appointment> appointments =  _context.Appointments.ToList();
-
-                if (a.Date >= s.StartDate && a.Date <= s.EndDate)
+                IList<Schedule> schedules = _context.Schedules.Where(i => i.DoctorId == doctorId && i.ClinicId==clinicId).ToList();
+                IList<Appointment> appointments = _context.Appointments.ToList();
+                if (schedules.Count() > 0)
                 {
-                    foreach (Appointment appointment in appointments)
+                    foreach (Schedule s in schedules)
                     {
-                        if (a.Date == appointment.Date)
+                        if (date >= s.StartDate && date <= s.EndDate)
                         {
-                            if (a.StartTime >= appointment.StartTime && a.EndTime <= appointment.EndTime)
+                            foreach (Appointment a in appointments)
                             {
-                                response.Message = "This time slot is already booked";
+                                if (date == a.Date)
+                                {
+                                    if (a.StartTime >= a.StartTime && a.EndTime <= a.EndTime)
+                                    {
+                                        response.Message = "This slot is already booked";
+                                        response.Status = false;
+                                        response.Result = null;
+                                        return Ok(response);
+                                    }
+                                }
+                            }
+                            if ((startTime >= s.StartTime && startTime < s.EndTime) && (endTime > s.StartTime && endTime <= s.EndTime))
+                            {
+
+
+                                await _context.Appointments.AddAsync(ap);
+                                await _context.SaveChangesAsync();
+
+                                //var patient = _context.Patients.Where(a => a.Id == patientId).FirstOrDefault();
+                                //var doc = _context.Doctors.Where(a => a.Id == doctorId).FirstOrDefault();
+
+                                //var clinic = _context.Clinics.Where(a => a.Id == clinicId).FirstOrDefault();
+
+                                //MailMessage em = new MailMessage();
+                                //em.To.Add(patient.Email);
+                                //em.From = new MailAddress("faizanmunirofficial@gmail.com", "wHealth");
+                                //em.Subject = "--Appointment Notification--";
+
+
+
+                                //em.Body = "<h4>Dear " + patient.Name + ", </h4><br>Your Appointment has been booked with.<br><br>" + doc.Name + " in " + clinic.Name + "<br><br>  Thanks.";
+
+                                //em.IsBodyHtml = true;
+
+                                //SmtpClient cli = new SmtpClient();
+                                //cli.Host = "116.202.175.92";
+                                //cli.Port = 25;
+                                //cli.UseDefaultCredentials = false;
+                                //cli.Credentials = new NetworkCredential("faizanmunirofficial@gmail.com", "saim9797");
+                                //cli.EnableSsl = false;
+
+                                //await cli.SendMailAsync(em);
+
+
+                                response.Message = "Appointmnt is booked!";
+                                response.Status = true;
+                                return Ok(response);
+                            }
+                            else
+                            {
+                                response.Message = "This time slot is not available";
                                 response.Status = false;
                                 return Ok(response);
                             }
+
                         }
+                        
+
+
+
                     }
 
-                    if ((a.StartTime >= s.StartTime && a.StartTime < s.EndTime) && (a.EndTime > s.StartTime && a.EndTime <= s.EndTime))
-                    {
-                       
-
-                        await _context.Appointments.AddAsync(a);
-                        await _context.SaveChangesAsync();
-
-                        response.Message = "Appointmnt is booked!";
-                        response.Status = true;
-                        return Ok(response);
-                    }
-                    else
-                    {
-                        response.Message = "This time slot is not available";
-                        response.Status = false;
-                        return Ok(response);
-                    }
+                    response.Message = "Doctor is not available in this clinic on this day";
+                    response.Status = false;
+                    response.Result = null;
+                    return Ok(response);
 
                 }
                 else
                 {
-                    response.Message = "Doctor is not available on this day!";
+                    response.Message = "this doctor has no schedule in this clinic";
                     response.Status = false;
-                    return Ok(response);
+                    response.Result = schedules;
                 }
-                
-
+                response.Message = "Doctor is not available in this clinic on this day";
+                response.Status = false;
+                response.Result = null;
+                return Ok(response);
 
             }
             catch(Exception ex) 
@@ -120,6 +164,7 @@ namespace wHealthApi.Controllers
             }
 
         }
+
 
 
     }
