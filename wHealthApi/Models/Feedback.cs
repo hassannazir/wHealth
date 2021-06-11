@@ -5,16 +5,13 @@ using System.Collections.Generic;
 
 namespace wHealthApi.Models
 {
-    public partial class Appointment
+    public partial class Feedback
     {
         public int Id { get; set; }
         public int? PatientId { get; set; }
         public int? DoctorId { get; set; }
         public int? ClinicId { get; set; }
-        public int? Status { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public DateTime Date { get; set; }
-        public int? ScheduleId { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public int? Rating { get; set; }
+        public string Review { get; set; }
     }
 }

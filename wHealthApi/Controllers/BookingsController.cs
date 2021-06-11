@@ -22,7 +22,7 @@ namespace wHealthApi.Controllers
 
 
 
-        [HttpPut]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> BookAppointmentAsync(int patientId,int doctorId,int clinicId,int status,TimeSpan startTime, TimeSpan endTime, DateTime date)
         {
@@ -53,13 +53,16 @@ namespace wHealthApi.Controllers
                             {
                                 if (date == a.Date)
                                 {
-                                    if (a.StartTime >= a.StartTime && a.EndTime <= a.EndTime)
+                                    if ((startTime >= a.StartTime && startTime <= a.EndTime)|| (endTime >= a.StartTime && endTime <= a.EndTime) || (startTime <= a.StartTime && endTime >= a.EndTime))
                                     {
                                         response.Message = "This slot is already booked";
                                         response.Status = false;
                                         response.Result = null;
                                         return Ok(response);
                                     }
+                                 
+
+
                                 }
                             }
                             if ((startTime >= s.StartTime && startTime < s.EndTime) && (endTime > s.StartTime && endTime <= s.EndTime))
@@ -69,30 +72,6 @@ namespace wHealthApi.Controllers
                                 await _context.Appointments.AddAsync(ap);
                                 await _context.SaveChangesAsync();
 
-                                //var patient = _context.Patients.Where(a => a.Id == patientId).FirstOrDefault();
-                                //var doc = _context.Doctors.Where(a => a.Id == doctorId).FirstOrDefault();
-
-                                //var clinic = _context.Clinics.Where(a => a.Id == clinicId).FirstOrDefault();
-
-                                //MailMessage em = new MailMessage();
-                                //em.To.Add(patient.Email);
-                                //em.From = new MailAddress("faizanmunirofficial@gmail.com", "wHealth");
-                                //em.Subject = "--Appointment Notification--";
-
-
-
-                                //em.Body = "<h4>Dear " + patient.Name + ", </h4><br>Your Appointment has been booked with.<br><br>" + doc.Name + " in " + clinic.Name + "<br><br>  Thanks.";
-
-                                //em.IsBodyHtml = true;
-
-                                //SmtpClient cli = new SmtpClient();
-                                //cli.Host = "116.202.175.92";
-                                //cli.Port = 25;
-                                //cli.UseDefaultCredentials = false;
-                                //cli.Credentials = new NetworkCredential("faizanmunirofficial@gmail.com", "saim9797");
-                                //cli.EnableSsl = false;
-
-                                //await cli.SendMailAsync(em);
 
 
                                 response.Message = "Appointmnt is booked!";
