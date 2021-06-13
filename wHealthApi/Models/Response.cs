@@ -11,5 +11,6 @@ namespace wHealthApi.Models
         public dynamic Result { get; set; }
         public string Token { get; set; }
         public string Message { get; set; }
+        public int Count { get; set; }
     }
 }

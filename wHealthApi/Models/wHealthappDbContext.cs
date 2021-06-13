@@ -175,6 +175,7 @@ namespace wHealthApi.Models
                 entity.Property(e => e.PatientId).HasColumnName("patient_id");
 
                 entity.Property(e => e.Rating).HasColumnName("rating");
+               // entity.Property(e => e.Rating).HasColumnType("float");
 
                 entity.Property(e => e.Review).HasColumnName("review");
             });

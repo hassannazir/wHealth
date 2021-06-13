@@ -292,9 +292,178 @@ namespace wHealthApi.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> PatientFeedback(int patientId,int doctorId, int clinicId,float rating,string review)
+        {
+            Response res = new Response();
+            Feedback fd = new Feedback();
+            fd.PatientId = patientId;
+            fd.DoctorId = doctorId;
+            fd.ClinicId = clinicId;
+            fd.Rating = rating;
+            fd.Review = review;
+
+            try
+            {
+                await _context.Feedbacks.AddAsync(fd);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                res.Status = false;
+                res.Message = "Error occuring while updating data";
+                return Ok(res);
+            }
+
+            res.Status = true;
+            res.Message = "Review submitted successfully";
+            return Ok(res);
+
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> FeedbackList(int doctorId)
+        {
+            Response res = new Response();
+            try
+            {
+                var query = (from p in  _context.Patients
+                             join fd in _context.Feedbacks
+                             on p.Id equals fd.PatientId
+                             join c in _context.Clinics
+                                  on fd.ClinicId equals c.Id
+                             where fd.DoctorId == doctorId
+                             select new { patientName = p.Name,clinicName=c.Name,fd.Review,rating=Convert.ToDouble(fd.Rating) }).ToList();
 
 
+                if (query != null)
+                {
+                    res.Status = true;
+                    res.Result = query;
+                    res.Message = "Patient Review List About Doctor";
+                    return Ok(res);
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                res.Status = false;
+                res.Message = "Error Occurs..";
+                return Ok(res);
+            }
+            res.Status = false;
+            res.Message = "Patients Review List is Empty";
+            return Ok(res);
 
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllSlots(int doctorId, int clinicId, DateTime date)
+        {
+            Schedule schedule = new Schedule();
+            Response res = new Response();
+
+            List<Appointment> slotList = new List<Appointment>();
+            var scheduleList = _context.Schedules.Where(d => d.DoctorId == doctorId && d.ClinicId == clinicId).ToList();
+
+            for (int i = 0; i < scheduleList.Count; i++)
+            {
+                if (date >= scheduleList[i].StartDate && date <= scheduleList[i].EndDate && scheduleList[i].Recurring != true)
+                {
+                    schedule = scheduleList[i];
+                    break;
+                }
+            }
+
+            if (schedule.Id == 0)
+            {
+                var recScheduleList = scheduleList.Where(r => r.Recurring == true).ToList();
+                for (int i = 0; i < recScheduleList.Count; i++)
+                {
+                    var recDate = recScheduleList[i].StartDate;
+
+                    while (recDate <= recScheduleList[i].EndDate)
+                    {
+                        if (recDate == date)
+                        {
+                            schedule = recScheduleList[i];
+                            break;
+                        }
+
+                        recDate.AddDays(7);
+                    }
+
+                }
+
+            }
+
+
+            if (schedule.Id != 0)
+            {
+                TimeSpan sTime = new TimeSpan();
+                sTime = schedule.StartTime;
+                
+                while (sTime < schedule.EndTime)
+                {
+                    Appointment slot = new Appointment();
+                    slot.DoctorId = doctorId;
+                    slot.ClinicId = clinicId;
+                    slot.Date = date;
+                    slot.Status = 0;
+                    slot.StartTime = sTime;
+                    slot.EndTime = sTime.Add(new TimeSpan(0, schedule.SlotLength, 0));
+                    if (slot.EndTime > schedule.EndTime)
+                        break;
+                    slotList.Add(slot);
+                    sTime = slot.EndTime;
+                    
+                }
+
+            }
+
+            var bookedList = _context.Appointments.Where(i => i.DoctorId == doctorId && i.ClinicId == clinicId && i.Date == date && i.Status!=0).ToList();
+
+            foreach(var a in slotList)
+            {
+                foreach(var b in bookedList)
+                {
+                    if(a.StartTime==b.StartTime && a.EndTime==b.EndTime)
+                    {
+                        a.Status = b.Status;
+                    }
+                }
+            }
+           
+
+            var query = (from slot in slotList
+                         select new { slot.DoctorId,slot.ClinicId,slot.Date,slot.Status,startTime=slot.StartTime.ToString(),endTime=slot.EndTime.ToString()}).ToList();
+
+            List<Appointment> apps = new List<Appointment>();
+            res.Result = query;
+
+            if (slotList.Count != 0)
+            {
+                res.Status = true;
+                res.Count = slotList.Count;
+                res.Message = "All Slots";
+                return Ok(res);
+            }
+            else
+            {
+                res.Status = false;
+                res.Message = "Slot List is Empty";
+                return Ok(res);
+            }
+
+        }
 
     }
+
 }
+
+
+
+
+
