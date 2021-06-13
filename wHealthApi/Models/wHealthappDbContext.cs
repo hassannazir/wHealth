@@ -22,6 +22,7 @@ namespace wHealthApi.Models
         public virtual DbSet<Clinic> Clinics { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<Doctorclinic> Doctorclinics { get; set; }
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<General> Generals { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
@@ -54,18 +55,15 @@ namespace wHealthApi.Models
 
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 
-                
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
 
                 entity.Property(e => e.PatientId).HasColumnName("patient_id");
 
-                entity.Property(e => e.ScheduleId)
-                    .IsUnicode(false)
-                    .HasColumnName("scheduleId");
+                entity.Property(e => e.ScheduleId).HasColumnName("scheduleId");
 
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
 
                 entity.Property(e => e.Status).HasColumnName("status");
-                entity.Property(e => e.EndTime).HasColumnName("end_time");
             });
 
             modelBuilder.Entity<Appointmentdetail>(entity =>
@@ -162,6 +160,23 @@ namespace wHealthApi.Models
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
                     .HasColumnName("status");
+            });
+
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.ToTable("feedback");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
+
+                entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
+
+                entity.Property(e => e.PatientId).HasColumnName("patient_id");
+
+                entity.Property(e => e.Rating).HasColumnName("rating");
+
+                entity.Property(e => e.Review).HasColumnName("review");
             });
 
             modelBuilder.Entity<General>(entity =>
